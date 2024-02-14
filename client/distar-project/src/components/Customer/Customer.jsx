@@ -7,6 +7,3 @@ const Customrt = () => {
 }
  
 export default Customrt;
-<>
-    <p>Hello customer</p>
-</>
