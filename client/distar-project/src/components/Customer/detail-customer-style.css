@@ -1,0 +1,53 @@
+.btn-edit {
+    background: white;
+    border: none;
+    border-radius: 5px;
+    width: 125px;
+    height: 52px;
+    color: #4D639B;
+}
+.edit-icon {
+    background: #DEE3F0;
+    border-radius: 5px;
+}
+.btn-del {
+    background: white;
+    border: none;
+    border-radius: 5px;
+    width: 90px;
+    height: 52px;
+    color: #AF2F2F;
+}
+.del-icon {
+    background: #E2AEAE;
+    border-radius: 5px;
+}
+
+.card-detail {
+    border: none;
+    font-size: 18px;
+}
+
+.card-piechart {
+    border: none;
+    height: 100%;
+}
+
+.card-order {
+    border: none;
+}
+
+#add-order {
+    background: #E5EAF9;
+    color: #4D639B;
+}
+
+#edit-order {
+    background: #FBE6BD;
+    color: #CD9507;
+}
+
+#del-order {
+    background: #E2AEAE;
+    color: #B84A4A;
+}

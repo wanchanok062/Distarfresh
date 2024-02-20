@@ -1,0 +1,41 @@
+
+
+html,
+body,
+#root,
+.content {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: #f0f0f0;
+  font-family: 'Kanit';
+}
+
+.app {
+  display: flex;
+  position: relative;
+  background-color: #FFF;
+  height: 100%;
+  width: 100%;
+}
+
+.content_body {
+  width: 100%;
+  height: 90%;
+  overflow: scroll;
+}
+
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
