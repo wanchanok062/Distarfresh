@@ -1,4 +1,4 @@
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+
 import { useState } from 'react';
 
 function AddOrder() {
@@ -49,6 +49,7 @@ function AddOrder() {
     };
 
     return (
+        /* to DetailCustomer.jsx */
         <div className="modal fade" id="addOrder" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                 <div className="modal-content">
@@ -63,31 +64,21 @@ function AddOrder() {
                                 <input type="text" className="form-control" />
                             </div>
                             <div className="row">
-                                <div className="col-md-5">
+                                <div className="col-md-6">
                                     <label className="form-label">รายการ</label>
-                                </div>
-                                <div className='col-md-5'>
-                                    <label className="form-label">จำนวน</label>
-                                </div>
-                                <div className='col-md-2'></div>
-                            </div>
-                            <div className='row mb-3'>
-                                <div className='col-md-5'>
                                     <input type="text" name='listOrder'
                                         onChange={e => setListOrder(e.target.value)}
                                         className='form-control' required />
                                     {/* Required. */}
-                                    {listOrderError && <div style={{ color: 'red' }}>list order required.</div>}
+                                    {listOrderError && <div style={{ color: 'red' }}>ระบุรายการ</div>}
                                 </div>
-                                <div className='col-md-5'>
+                                <div className='col-md-6'>
+                                    <label className="form-label">จำนวน</label>
                                     <input type="text" name='quantity'
                                         onChange={e => setQuantity(e.target.value)}
                                         className="form-control" />
                                     {/* Required. */}
-                                    {quantityError && <div style={{ color: 'red' }}>quantity required.</div>}
-                                </div>
-                                <div className='col-md-2'>
-                                    <button type="submit" className='btn btn-primary'><AddOutlinedIcon /></button>
+                                    {quantityError && <div style={{ color: 'red' }}>ระบุจำนวน</div>}
                                 </div>
                             </div>
                             <div className="mb-3">
@@ -97,7 +88,7 @@ function AddOrder() {
                                     <option value=""></option>
                                 </select>
                                 {/* Required. */}
-                                {deliveryError && <div style={{ color: 'red' }}>delivery required.</div>}
+                                {deliveryError && <div style={{ color: 'red' }}>ระบุรอบวันจัดส่ง</div>}
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">วันที่จัดส่ง</label>
@@ -105,7 +96,7 @@ function AddOrder() {
                                     onChange={e => setOrderDate(e.target.value)}
                                     className="form-control" id="orderDate" required />
                                 {/* Required. */}
-                                {orderDateError && <div style={{ color: 'red' }}>order date required.</div>}
+                                {orderDateError && <div style={{ color: 'red' }}>ระบุวันที่จัดส่ง</div>}
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">สถานะ</label>
@@ -114,7 +105,7 @@ function AddOrder() {
                                     <option value=""></option>
                                 </select>
                                 {/* Required. */}
-                                {statusError && <div style={{ color: 'red' }}>status required.</div>}
+                                {statusError && <div style={{ color: 'red' }}>ระบุสถานะ</div>}
                             </div>
                         </form>
                     </div>

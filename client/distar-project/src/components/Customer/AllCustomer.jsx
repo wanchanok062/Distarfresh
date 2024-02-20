@@ -27,7 +27,7 @@ function AllCustomer() {
             </Row>
             <Row>
                 <Col>
-                {/* Show Customer List */}
+                {/* Show CustomerList.jsx */}
                     <CustomerList />
                 </Col>
             </Row>

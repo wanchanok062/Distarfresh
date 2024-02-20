@@ -5,6 +5,13 @@
   position: relative;
   z-index: 2;
 }
+.btn-back {
+  border: none;
+  border-radius: 5px;
+  color: #4D639B;
+  background-color: #DEE3F0;
+  width: 75px;
+}
 #card {
   border: none;
   background: rgba(238, 175, 16, 1);

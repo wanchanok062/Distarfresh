@@ -34,7 +34,7 @@ const Appbar = () => {
                                 {!isCollapsed && (
                                     <Box
                                         display="flex"
-                                        justifyContent="end"
+                                        justifyContent="center"
                                     >
                                         <IconButton onClick={() => setisCollapsed(!isCollapsed)}>
                                             <MenuOutlinedIcon />

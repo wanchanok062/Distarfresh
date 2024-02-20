@@ -21,6 +21,7 @@ const Customrt = () => {
                             </div>
                         </div>
                     </button>
+                    {/* Link to AllCustomer.jsx */}
                     <Link to="/customer/allcustomer">
                         <button id="btn-customer">
                             <div style={{ display: 'flex', alignItems: 'center', color: '#CE9525' }}>

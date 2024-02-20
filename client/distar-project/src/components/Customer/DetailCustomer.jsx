@@ -18,7 +18,7 @@ function DetailCustomer() {
             <Row>
                 <Col md={12} className="d-flex justify-content-end mb-3">
                     <button className="d-flex justify-content-center align-items-center btn-edit mx-3"
-                        data-bs-toggle="modal" data-bs-target="#edit"
+                        data-bs-toggle="modal" data-bs-target="#editCustomer"
                     >
                         <div>
                             <EditOutlinedIcon className='edit-icon' />
@@ -28,7 +28,7 @@ function DetailCustomer() {
                         </div>
                     </button>
                     <button className="d-flex justify-content-center align-items-center btn-del"
-                        data-bs-toggle="modal" data-bs-target="#delete"
+                        data-bs-toggle="modal" data-bs-target="#deleteCustomer"
                     >
                         <div>
                             <CloseOutlinedIcon className='del-icon' />

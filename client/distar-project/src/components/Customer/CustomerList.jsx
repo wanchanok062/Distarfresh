@@ -15,22 +15,22 @@ function CustomerList() {
                 {/* Filter */}
                 <Row className=' ms-auto mx-3 mb-3'>
                     <Col md={3} className='mb-2 mb-md-0'>
-                        <select id='filter' className='form-select'>
+                        <select id='statusMemberFilter' className='form-select'>
                             <option value="" disabled selected>สถานะสมาชิก</option>
                         </select>
                     </Col>
                     <Col md={3} className='mb-2 mb-md-0'>
-                        <select id='filter' className='form-select'>
+                        <select id='typeCustomerFilter' className='form-select'>
                             <option value="" disabled selected>ประเภทลูกค้า</option>
                         </select>
                     </Col>
                     <Col md={3} className='mb-2 mb-md-0'>
-                        <select id='filter' className='form-select'>
+                        <select id='typeMemberFilter' className='form-select'>
                             <option value="" disabled selected>รูปแบบสมาชิก</option>
                         </select>
                     </Col>
                     <Col md={3} className='mb-2 mb-md-0'>
-                        <input id='filter' className='form-control' type='text' placeholder='ค้นหา' />
+                        <input id='searchFilter' className='form-control' type='text' placeholder='ค้นหา' />
                     </Col>
                 </Row>
                 {/* This is Header */}
@@ -79,7 +79,7 @@ function CustomerList() {
                         ต่ออายุ
                     </Col>
                     <Col md={2} className='d-flex justify-content-end'>
-                        {/* button */}
+                        {/* Link to DetailCustomer.jsx*/}
                         <Link to='/customer/detailcustomer'>
                             <button id='btn-detail' className='btn-sm'>รายละเอียด</button>
                         </Link>

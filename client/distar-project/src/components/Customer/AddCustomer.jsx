@@ -78,6 +78,7 @@ function AddCustomer() {
     }
   }
   return (
+    /* to Customer.jsx and AllCustomer.jsx */
     <div className="modal fade" id="addCustomer" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
       <div className="modal-dialog modal-dialog-scrollable">
         <div className="modal-content">
