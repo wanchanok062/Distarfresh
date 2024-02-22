@@ -1,7 +1,14 @@
 import './customer-list-style.css';
 import { Card, Col, Row } from 'react-bootstrap'; // Import Button from react-bootstrap
 import { Link } from 'react-router-dom';
+import useFetch from '../hook/useFetch';
+
+
+
 function CustomerList() {
+    
+    
+    const { data: customers } = useFetch(`${import.meta.env.VITE_APP_API_KEY}customers`);
     return (
         <div>
             <div>
@@ -10,6 +17,7 @@ function CustomerList() {
                 <Row className='m-3'>
                     <Col>
                         ลูกค้า
+
                     </Col>
                 </Row>
                 {/* Filter */}
@@ -59,32 +67,37 @@ function CustomerList() {
                     <hr className='mt-3 w-100' />
                 </Row>
                 {/* This is data. */}
-                <Row className='mx-3 mb-2'>
-                    <Col md={1} className='text-center'>
-                        SW0001
-                    </Col>
-                    <Col md={2} className='text-center'>
-                        มารุ ชิซุโอกะ
-                    </Col>
-                    <Col md={2} className='text-center'>
-                        06222222222
-                    </Col>
-                    <Col md={2} className='text-center'>
-                        ลูกค้าใหม่
-                    </Col>
-                    <Col md={2} className='text-center'>
-                        1 เดือน
-                    </Col>
-                    <Col md={1} className='text-center'>
-                        ต่ออายุ
-                    </Col>
-                    <Col md={2} className='d-flex justify-content-end'>
-                        {/* Link to DetailCustomer.jsx*/}
-                        <Link to='/customer/detailcustomer'>
-                            <button id='btn-detail' className='btn-sm'>รายละเอียด</button>
-                        </Link>
-                    </Col>
-                </Row>
+                {
+                    customers && customers.map((customer) => (
+                        <Row className='mx-3 mb-2' key={customer._id}>
+                            <Col md={1} className='text-center'>
+                                {customer.customer_id}
+                            </Col>
+                            <Col md={2} className='text-center'>
+                                {customer.full_name}
+                            </Col>
+                            <Col md={2} className='text-center'>
+                                {customer.tel}
+                            </Col>
+                            <Col md={2} className='text-center'>
+                                {customer.customer_type_name}
+                            </Col>
+                            <Col md={2} className='text-center'>
+                                {customer.member_type_name}
+                            </Col>
+                            <Col md={1} className='text-center'>
+                                {customer.member_status_name}
+                            </Col>
+                            <Col md={2} className='d-flex justify-content-end'>
+                                {/* Link to DetailCustomer.jsx*/}
+                                <Link to={`/customer/detailcustomer/${customer.customer_id}`}>
+                                    <button id='btn-detail' className='btn-sm'>รายละเอียด</button>
+                                </Link>
+                            </Col>
+                        </Row>
+                    ))
+                }
+
                 <div className='mb-3'></div>
             </Card>
         </div>

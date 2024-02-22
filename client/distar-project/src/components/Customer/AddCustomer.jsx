@@ -1,4 +1,6 @@
 import { useState } from "react";
+import usePost from '../hook/usePost'; // Import the custom hook
+
 
 function AddCustomer() {
   const [fullName, setFullName] = useState('');
@@ -28,8 +30,23 @@ function AddCustomer() {
   const [provider, setProvider] = useState('');
   const [providerError, setProviderError] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const [postData, setPostData] = useState({}); // State to hold data to be posted
+  const { data, error, loading, post } = usePost(); // Use the custom hook
+
+  const generateUniqueId = () => {
+    // Generate a random number between 0 and 9999
+    const randomNumber = Math.floor(Math.random() * 10000);
+    // Format the number with leading zeros and concatenate with 'cu-'
+    const customerId = `cu-${randomNumber.toString().padStart(4, '0')}`;
+    return customerId;
+  };
+
+  const [customerId, setcustomerId] = useState(generateUniqueId);
+
+
+
+  const handleSubmit = async (e) => {
+    // e.preventDefault();
 
     if (fullName.trim() === '') {
       setFullNameError(true);
@@ -74,8 +91,23 @@ function AddCustomer() {
     if (provider.trim() === '') {
       setProviderError(true);
     } else {
-      console.log(provider);
+      const customerData = {
+        "customer_id": customerId,
+        "full_name": fullName,
+        "tel": tel,
+        "address": address,
+        "start_date": startDate,
+        "exp_date": endDate,
+        "customer_type_id": customerType,
+        "member_type_id": membership,
+        "member_status_id": statusMember,
+        "employee_id": provider
+      };
+      console.log(customerData);
+      // console.log(provider);
+      // await post(`${import.meta.env.VITE_APP_API_KEY}customer}`, postData);
     }
+
   }
   return (
     /* to Customer.jsx and AllCustomer.jsx */
@@ -90,7 +122,7 @@ function AddCustomer() {
             <form onSubmit={(e) => e.preventDefault()}>
               <div className="mb-3">
                 <label className="form-label">รหัสสมาชิก</label>
-                <input type="text" className="form-control" placeholder="SW0008" />
+                <input type="text" className="form-control" value={customerId} placeholder={customerId} disabled />
               </div>
               <div className="mb-3">
                 <label className="form-label">ชื่อ-สกุล</label>
@@ -127,7 +159,7 @@ function AddCustomer() {
                 <select className="form-select" name="customerType"
                   onChange={e => setCustomerType(e.target.value)}
                   required>
-                  <option value=""></option>
+                  <option value="t-01">ลูกค้าใหม่</option>
                 </select>
                 {/* Required. */}
                 {customerTypeError && <div className="text-danger">ระบุประเภทลูกค้า</div>}
@@ -137,7 +169,7 @@ function AddCustomer() {
                 <select className="form-select" name="membership"
                   onChange={e => setMembership(e.target.value)}
                   required>
-                  <option value=""></option>
+                  <option value="m-01">สมาชิก 1 เดือน</option>
                 </select>
                 {/* Required. */}
                 {membershipError && <div className="text-danger">ระบุสมาชิก</div>}
@@ -147,7 +179,7 @@ function AddCustomer() {
                 <select className="form-select" name="statusMember"
                   onChange={e => setStatusMember(e.target.value)}
                   required>
-                  <option value=""></option>
+                  <option value="ms-01">สมาชิก</option>
                 </select>
                 {/* Required. */}
                 {statusMemberError && <div className="text-danger">ระบุสถานะสมาชิก</div>}
@@ -164,8 +196,8 @@ function AddCustomer() {
                 <label className="form-label">สถานะการชำระเงิน</label>
                 <select className="form-select"
                   onChange={e => setPaymentStatus(e.target.value)}
-                  required>
-                  <option value=""></option>
+                  required disabled>
+                  <option value="รอตรวจสอบ">รอตรวจสอบ</option>
                 </select>
                 {/* Required. */}
                 {paymentStatusError && <div className="text-danger">ระบุสถานะการชำระเงิน</div>}
@@ -174,8 +206,8 @@ function AddCustomer() {
                 <label className="form-label">ผู้จัดหา</label>
                 <select className="form-select"
                   onChange={e => setProvider(e.target.value)}
-                  required>
-                  <option value=""></option>
+                  required >
+                  <option value="em-001">วินัย เลิศสกุล</option>
                 </select>
                 {/* Required. */}
                 {providerError && <div className="text-danger">ระบุผู้จัดหา</div>}

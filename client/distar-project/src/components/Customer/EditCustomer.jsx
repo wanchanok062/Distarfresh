@@ -90,7 +90,7 @@ function EditCustomer() {
             <form onSubmit={(e) => e.preventDefault()}>
               <div className="mb-3">
                 <label className="form-label">รหัสสมาชิก</label>
-                <input type="text" className="form-control" placeholder="SW0008" />
+                <input type="text" className="form-control" placeholder="" />
               </div>
               <div className="mb-3">
                 <label className="form-label">ชื่อ-สกุล</label>

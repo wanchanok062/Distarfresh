@@ -1,5 +1,26 @@
+import axios from 'axios';
+import { useState } from 'react'; // Import useState hook
 
-function DeleteCustomer() {
+function DeleteCustomer({delete_id}) {
+   
+    const [isLoading, setIsLoading] = useState(false); // State to manage loading state
+
+    const deleteOrder = async () => {
+     
+        setIsLoading(true); // Set loading state to true when deletion starts
+        try {
+            // Make a DELETE request to the server to delete the order
+            const response = await axios.delete(`${import.meta.env.VITE_APP_API_KEY}customer/${delete_id}`);
+            // Handle success response
+            window.location.href = '/customer';
+        } catch (error) {
+            // Handle error
+            console.error('Error deleting order:', error);
+            // You can display an error message or perform other error handling actions here
+        } finally {
+            setIsLoading(false); // Set loading state to false after deletion (whether success or failure)
+        }
+    };
     return (
         /* to DetailCustomer.jsx */
         <div className="modal fade" id="deleteCustomer" aria-labelledby="delete" aria-hidden="true">
@@ -14,7 +35,9 @@ function DeleteCustomer() {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                        <button type="button" className="btn btn-danger">ลบ</button>
+                        <button type="button" className="btn btn-danger" onClick={deleteOrder} disabled={isLoading}>
+                            {isLoading ? 'กำลังลบ...' : 'ลบ'}
+                        </button>
                     </div>
                 </div>
             </div>

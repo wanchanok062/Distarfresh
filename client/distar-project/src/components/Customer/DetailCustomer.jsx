@@ -7,7 +7,29 @@ import DeleteCustomer from './DeleteCustomer';
 import AddOrder from './AddOrder';
 import DeleteOrder from './DeleteOrder';
 import EditOrder from './EditOrder';
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
 function DetailCustomer() {
+    const { customer_id } = useParams();
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        //useFetch data
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_APP_API_KEY}customer/${customer_id}`);
+                setData(response.data);
+            } catch (error) {
+            }
+        };
+
+        fetchData();
+    }, [customer_id]);
+
+    console.log(data);
+
     return (
         <Container>
             <Row className="mb-3">
@@ -40,113 +62,59 @@ function DetailCustomer() {
                 </Col>
                 {/* Modal Customer */}
                 <EditCustomer />
-                <DeleteCustomer />
+                <DeleteCustomer delete_id={customer_id}  />
             </Row>
             <Row className='mb-3'>
                 <Col md={6}>
                     <Card className='card-detail'>
                         <Card.Body className="mx-3">
-                            <Row className="mb-2">
-                                <Col md={5}>
-                                    รหัสสมาชิก
-                                </Col>
-                                <Col md={1}>
-                                    :
-                                </Col>
-                                <Col md={6}>
-                                    {/* Data */}
-                                </Col>
-                            </Row>
-                            <Row className="mb-2">
-                                <Col md={5}>
-                                    วันที่สมัคร
-                                </Col>
-                                <Col md={1}>
-                                    :
-                                </Col>
-                                <Col md={6}>
-                                    {/* Data */}
-                                </Col>
-                            </Row>
-                            <Row className="mb-2">
-                                <Col md={5}>
-                                    วันที่สิ้นสุด
-                                </Col>
-                                <Col md={1}>
-                                    :
-                                </Col>
-                                <Col md={6}>
-                                    {/* Data */}
-                                </Col>
-                            </Row>
-                            <Row className="mb-2">
-                                <Col md={5}>
-                                    ประเภทลูกค้า
-                                </Col>
-                                <Col md={1}>
-                                    :
-                                </Col>
-                                <Col md={6}>
-                                    {/* Data */}
-                                </Col>
-                            </Row>
-                            <Row className="mb-2">
-                                <Col md={5}>
-                                    ชื่อ-นามสกุล
-                                </Col>
-                                <Col md={1}>
-                                    :
-                                </Col>
-                                <Col md={6}>
-                                    {/* Data */}
-                                </Col>
-                            </Row>
-                            <Row className="mb-2">
-                                <Col md={5}>
-                                    เบอร์โทร
-                                </Col>
-                                <Col md={1}>
-                                    :
-                                </Col>
-                                <Col md={6}>
-                                    {/* Data */}
-                                </Col>
-                            </Row>
-                            <Row className="mb-2">
-                                <Col md={5}>
-                                    ที่อยู่ในการจัดส่ง
-                                </Col>
-                                <Col md={1}>
-                                    :
-                                </Col>
-                                <Col md={6}>
-                                    {/* Data */}
-                                </Col>
-                            </Row>
-                            <Row className="mb-2">
-                                <Col md={5}>
-                                    สถานะการชำระเงิน
-                                </Col>
-                                <Col md={1}>
-                                    :
-                                </Col>
-                                <Col md={6}>
-                                    {/* Data */}
-                                </Col>
-                            </Row>
-                            <Row className="mb-2">
-                                <Col md={5}>
-                                    ผู้จัดหา
-                                </Col>
-                                <Col md={1}>
-                                    :
-                                </Col>
-                                <Col md={6}>
-                                    {/* Data */}
-                                </Col>
-                            </Row>
+                            {data && data.map((customer) => ( 
+                                <Row key={customer.customer_id}>
+                                    <Col md={3} className='text-right'>
+                                        รหัสลูกค้า :
+                                    </Col>
+                                    <Col md={9}>
+                                        {customer.customer_id}
+                                    </Col>
+                                    <Col md={3} className='text-right'>
+                                        ชื่อ-สกุล :
+                                    </Col>
+                                    <Col md={9}>
+                                        {customer.full_name}
+                                    </Col>
+                                    <Col md={3} className='text-right'>
+                                        เบอร์โทร :
+                                    </Col>
+                                    <Col md={9}>
+                                        {customer.tel}
+                                    </Col>
+                                    <Col md={3} className='text-right'>
+                                        ที่อยู่ :
+                                    </Col>
+                                    <Col md={9}>
+                                        {customer.address}
+                                    </Col>
+                                    <Col md={3} className='text-right'>
+                                        ประเภทลูกค้า :
+                                    </Col>
+                                    <Col md={9}>
+                                        {customer.customer_type_name}
+                                    </Col>
+                                    <Col md={3} className='text-right'>
+                                        รูปแบบสมาชิก :
+                                    </Col>
+                                    <Col md={9}>
+                                        {customer.member_type_name}
+                                    </Col>
+                                    <Col md={3} className='text-right'>
+                                        สถานะสมาชิก :
+                                    </Col>
+                                    <Col md={9}>
+                                        {customer.member_status_name}
+                                    </Col>
+                                </Row>
+                            ))}
                         </Card.Body>
-
                     </Card>
                 </Col>
                 <Col md={6}>
@@ -237,7 +205,7 @@ function DetailCustomer() {
                         {/* Modal Order */}
                         <AddOrder />
                         <EditOrder />
-                        <DeleteOrder />
+                        <DeleteOrder/>
                     </Row>
                 </Card.Body>
             </Card>

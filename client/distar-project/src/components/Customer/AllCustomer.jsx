@@ -28,7 +28,7 @@ function AllCustomer() {
             <Row>
                 <Col>
                 {/* Show CustomerList.jsx */}
-                    <CustomerList />
+                    <CustomerList /> 
                 </Col>
             </Row>
         </Container>
