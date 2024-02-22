@@ -50,7 +50,8 @@ const Appbar = () => {
                                         alignItems="center"
                                     >
                                         {/* LOGO */}
-                                        <img className="logo" src={logo} alt="logo" />
+                                        <a href="/"> <img className="logo" src={logo} alt="logo"  /></a>
+                                      
                                     </Box>
                                 </Box>
                             )}

@@ -27,9 +27,6 @@ function DetailCustomer() {
 
         fetchData();
     }, [customer_id]);
-
-    console.log(data);
-
     return (
         <Container>
             <Row className="mb-3">

@@ -28,12 +28,13 @@ router.get("/customers", async (req, res) => {
 router.get("/customer/:id", async (req, res) => {
   try {
     const query = `
-        SELECT c.customer_id, c.full_name, c.tel, c.address, c.start_date, c.exp_date, ct.customer_type_name, mt.member_type_name, ms.member_status_name, e.employee_name
+        SELECT c.customer_id, c.full_name, c.tel, c.address, c.start_date, c.exp_date, ct.customer_type_name, mt.member_type_name, ms.member_status_name, e.employee_name,ps.paymentStatus_name
         FROM customer c
         LEFT JOIN customer_type ct ON c.customer_type_id = ct.customer_type_id
         LEFT JOIN member_type mt ON c.member_type_id = mt.member_type_id
         LEFT JOIN member_status ms ON c.member_status_id = ms.member_status_id
         LEFT JOIN employee e ON c.employee_id = e.employee_id
+        LEFT JOIN paymentStatus ps ON c.paymentStatus_id = ps.paymentStatus_id
         WHERE c.customer_id = $1
       `;
     const { rows } = await pool.query(query, [req.params.id]);
@@ -47,8 +48,8 @@ router.get("/customer/:id", async (req, res) => {
 router.post("/customer", async (req, res) => {
   try {
     const query = `
-        INSERT INTO customer (customer_id,full_name, tel, address, start_date, exp_date, customer_type_id, member_type_id, member_status_id, employee_id)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10)
+        INSERT INTO customer (customer_id,full_name, tel, address, start_date, exp_date, customer_type_id, member_type_id, member_status_id, employee_id,paymentStatus_id)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10,$11)
         RETURNING *
       `;
     const values = [
@@ -62,6 +63,7 @@ router.post("/customer", async (req, res) => {
       req.body.member_type_id,
       req.body.member_status_id,
       req.body.employee_id,
+      req.body.paymentStatus_id,
     ];
     const { rows } = await pool.query(query, values);
     res.json(rows);
