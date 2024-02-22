@@ -1,4 +1,7 @@
 const { Pool } = require("pg");
+require("dotenv").config();
+
+
 
 // Create a PostgreSQL pool
 const pool = new Pool({
@@ -6,7 +9,7 @@ const pool = new Pool({
   host: "localhost",
   database: "distar-db",
   password: "Admin135792468!!",
-  port: 5432, // PostgreSQL default port
+  port: process.env.PORT_DB , // PostgreSQL default port
 });
 
 
