@@ -1,0 +1,26 @@
+.add {
+    border: none;
+    width: 125px;
+    height: 45px;
+    background-color: #fff;
+    border-radius: 5px;
+    color:#4D639B;
+    font-size: 16px;
+}
+.edit {
+    background: #FBE6BD;
+    color: #CD9507;
+}
+.del {
+    background: #E2AEAE;
+    color: #B84A4A;
+}
+#card-list {
+    border: none;
+}
+.edit:hover {
+    color: #CD9507;
+}
+.del:hover {
+    color: #B84A4A;
+}

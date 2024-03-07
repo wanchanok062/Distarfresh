@@ -1,82 +1,22 @@
 import { useState } from "react";
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
 
 function EditCustomer() {
-  const [fullName, setFullName] = useState('');
-  const [fullNameError, setFullNameError] = useState(false);
+  const [validated, setValidated] = useState(false);
 
-  const [startDate, setStartDate] = useState('');
-  const [startDateError, setStartDateError] = useState(false);
-
-  const [endDate, setEndDate] = useState('');
-  const [endDateError, setEndDateError] = useState(false);
-
-  const [customerType, setCustomerType] = useState('');
-  const [customerTypeError, setCustomerTypeError] = useState(false);
-
-  const [membership, setMembership] = useState('');
-  const [membershipError, setMembershipError] = useState(false);
-
-  const [statusMember, setStatusMember] = useState('');
-  const [statusMemberError, setStatusMemberError] = useState(false);
-
-  const [address, setAddress] = useState('');
-  const [addressError, setAddressError] = useState(false);
-
-  const [paymentStatus, setPaymentStatus] = useState('');
-  const [paymentStatusError, setPaymentStatusError] = useState(false);
-
-  const [provider, setProvider] = useState('');
-  const [providerError, setProviderError] = useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (fullName.trim() === '') {
-      setFullNameError(true);
-    } else {
-      console.log(fullName);
+  const handleSubmit = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
     }
-    if (startDate.trim() === '') {
-      setStartDateError(true);
-    } else {
-      console.log(startDate);
-    }
-    if (endDate.trim() === '') {
-      setEndDateError(true);
-    } else {
-      console.log(endDate);
-    }
-    if (customerType.trim() === '') {
-      setCustomerTypeError(true);
-    } else {
-      console.log(customerType);
-    }
-    if (membership.trim() === '') {
-      setMembershipError(true);
-    } else {
-      console.log(membership);
-    }
-    if (statusMember.trim() === '') {
-      setStatusMemberError(true);
-    } else {
-      console.log(statusMember);
-    }
-    if (address.trim() === '') {
-      setAddressError(true);
-    } else {
-      console.log(address);
-    }
-    if (paymentStatus.trim() === '') {
-      setPaymentStatusError(true);
-    } else {
-      console.log(paymentStatus);
-    }
-    if (provider.trim() === '') {
-      setProviderError(true);
-    } else {
-      console.log(provider);
-    }
-  }
+
+    setValidated(true);
+  };
   return (
     /* to DetailCustomer.jsx*/
     <div className="modal fade" id="editCustomer" aria-labelledby="editCustomerModalLabel" aria-hidden="true">
@@ -87,104 +27,96 @@ function EditCustomer() {
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div className="modal-body">
-            <form onSubmit={(e) => e.preventDefault()}>
-              <div className="mb-3">
-                <label className="form-label">รหัสสมาชิก</label>
-                <input type="text" className="form-control" placeholder="" />
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form.Group>
+                  <Form.Label>รหัสสมาชิก</Form.Label>
+                  <Form.Control required type="text" placeholder="" readOnly />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>ชื่อ-นามสกุล</Form.Label>
+                  <Form.Control required type="text" placeholder="" />
+                  <Form.Control.Feedback type="invalid">โปรดระบุชื่อนามสกุล.</Form.Control.Feedback>
+                </Form.Group>
+              <Row className="mb-3">
+                <Col>
+                  <Form.Group>
+                    <Form.Label>วันที่สมัคร</Form.Label>
+                    <Form.Control type="date" required />
+                    <Form.Control.Feedback type="invalid">
+                      โปรดระบุวันที่สมัคร.
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>วันที่สิ้นสุด</Form.Label>
+                    <Form.Control type="date" required />
+                    <Form.Control.Feedback type="invalid">
+                      โปรดระบุวันที่สิ้นสุด.
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Form.Group className="mb-3" >
+                <Form.Label>ประเภทลูกค้า</Form.Label>
+                <Form.Select aria-label="Default select example" required >
+                  <option value="">...</option>
+                  <option value="">ลูกค้าใหม่</option>
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  โปรดเลือกประเภทลูกค้า.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="mb-3" >
+                <Form.Label>รูปแบบสมาชิก</Form.Label>
+                <Form.Select aria-label="Default select example">
+                  <option value="">...</option>
+                  <option value="">1 เดือน</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="mb-3" >
+                <Form.Label>สถานะสมาชิก</Form.Label>
+                <Form.Select aria-label="Default select example">
+                  <option value="">...</option>
+                  <option value="">สมาชิก</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="mb-3" >
+                <Form.Label>ที่อยู่</Form.Label>
+                <Form.Control as="textarea" required />
+                <Form.Control.Feedback type="invalid">
+                  โปรดระบุที่อยู่.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="mb-3" >
+                <Form.Label>เบอร์โทร</Form.Label>
+                <Form.Control type="text" required />
+                <Form.Control.Feedback type="invalid">
+                  โปรดระบุเบอร์โทร.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="mb-3" >
+                <Form.Label>สถานะการชำระเงิน</Form.Label>
+                <Form.Select aria-label="Default select example">
+                  <option value="">...</option>
+                  <option value="">รอตรวจสอบ</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="mb-3" >
+                <Form.Label>ผู้จัดหา</Form.Label>
+                <Form.Select aria-label="Default select example" required>
+                  <option></option>
+                  <option value="">คุณ พีระพฤติพิศ</option>
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  โปรดระบุผู้จัดหา.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="submit" onClick={handleSubmit} className="btn btn-primary">ยืนยัน</button>
               </div>
-              <div className="mb-3">
-                <label className="form-label">ชื่อ-สกุล</label>
-                <input type="text" name="fullName"
-                  onChange={e => setFullName(e.target.value)}
-                  className="form-control" required />
-                {/* Required. */}
-                {fullNameError && <div className="text-danger">ระบุชื่อ-สกุล</div>}
-              </div>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="mb-3">
-                    <label className="form-label">วันที่สมัคร</label>
-                    <input type="date" name="startDate"
-                      onChange={e => setStartDate(e.target.value)}
-                      className="form-control" required />
-                    {/* Required. */}
-                    {startDateError && <div className="text-danger">ระบุวันที่สมัคร</div>}
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="mb-3">
-                    <label className="form-label">วันที่สิ้นสุด</label>
-                    <input type="date" name="endDate"
-                      onChange={e => setEndDate(e.target.value)}
-                      className="form-control" required />
-                    {/* Required. */}
-                    {endDateError && <div className="text-danger">ระบุวันที่สิ้นสุด</div>}
-                  </div>
-                </div>
-              </div>
-              <div className="mb-3">
-                <label className="form-label">ประเภทลูกค้า</label>
-                <select className="form-select" name="customerType"
-                  onChange={e => setCustomerType(e.target.value)}
-                  required>
-                  <option value=""></option>
-                </select>
-                {/* Required. */}
-                {customerTypeError && <div className="text-danger">ระบุประเภทลูกค้า</div>}
-              </div>
-              <div className="mb-3">
-                <label className="form-label">รูปแบบสมาชิก</label>
-                <select className="form-select" name="membership"
-                  onChange={e => setMembership(e.target.value)}
-                  required>
-                  <option value=""></option>
-                </select>
-                {/* Required. */}
-                {membershipError && <div className="text-danger">ระบุสมาชิก</div>}
-              </div>
-              <div className="mb-3">
-                <label className="form-label">สถานะสมาชิก</label>
-                <select className="form-select" name="statusMember"
-                  onChange={e => setStatusMember(e.target.value)}
-                  required>
-                  <option value=""></option>
-                </select>
-                {/* Required. */}
-                {statusMemberError && <div className="text-danger">ระบุสถานะสมาชิก</div>}
-              </div>
-              <div className="mb-3">
-                <label className="form-label">ที่อยู่</label>
-                <input type="text" name="address"
-                  onChange={e => setAddress(e.target.value)}
-                  className="form-control" required />
-                {/* Required. */}
-                {addressError && <div className="text-danger">ระบุที่อยู่</div>}
-              </div>
-              <div className="mb-3">
-                <label className="form-label">สถานะการชำระเงิน</label>
-                <select className="form-select"
-                  onChange={e => setPaymentStatus(e.target.value)}
-                  required>
-                  <option value=""></option>
-                </select>
-                {/* Required. */}
-                {paymentStatusError && <div className="text-danger">ระบุสถานะการชำระเงิน</div>}
-              </div>
-              <div className="mb-3">
-                <label className="form-label">ผู้จัดหา</label>
-                <select className="form-select"
-                  onChange={e => setProvider(e.target.value)}
-                  required>
-                  <option value=""></option>
-                </select>
-                {/* Required. */}
-                {providerError && <div className="text-danger">ระบุผู้จัดหา</div>}
-              </div>
-            </form>
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-            <button type="submit" onClick={handleSubmit} className="btn btn-primary">ยืนยัน</button>
+            </Form>
           </div>
         </div>
       </div>
