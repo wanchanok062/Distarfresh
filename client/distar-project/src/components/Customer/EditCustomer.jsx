@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import useUpdateData from '../hook/useUpdateData';
-
+//
 function EditCustomer(data) {
   const { customer_id } = useParams();
   const { patchData } = useUpdateData();
