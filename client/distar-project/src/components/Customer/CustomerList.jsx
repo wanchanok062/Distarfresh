@@ -71,7 +71,7 @@ function CustomerList() {
                     customers && customers.map((customer) => (
                         <Row className='mx-3 mb-2' key={customer._id}>
                             <Col md={1} className='text-center'>
-                                {customer.customer_id}
+                            {customer.customer_id}
                             </Col>
                             <Col md={2} className='text-center'>
                                 {customer.full_name}

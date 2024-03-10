@@ -24,14 +24,13 @@ function DetailCustomer() {
             } catch (error) {
             }
         };
-
         fetchData();
     }, [customer_id]);
     return (
         <Container>
             <Row className="mb-3">
                 <Col>
-                    <h2> รายละเอียดลูกค้า(รหัส:{/* ID Customer */}) </h2>
+                    <h2 className='mt-3'> รายละเอียดลูกค้า (รหัส: {customer_id}) </h2>
                 </Col>
             </Row>
             <Row>
@@ -58,29 +57,29 @@ function DetailCustomer() {
                     </button>
                 </Col>
                 {/* Modal Customer */}
-                <EditCustomer />
-                <DeleteCustomer delete_id={customer_id}  />
+                <EditCustomer data={data} />
+                <DeleteCustomer delete_id={customer_id} />
             </Row>
             <Row className='mb-3'>
                 <Col md={6}>
                     <Card className='card-detail'>
                         <Card.Body className="mx-3">
-                            {data && data.map((customer) => ( 
+                            {data && data.map((customer) => (
                                 <Row key={customer.customer_id}>
                                     <Col md={3} className='text-right'>
-                                        รหัสลูกค้า :
+                                        รหัสลูกค้า
                                     </Col>
                                     <Col md={9}>
-                                        {customer.customer_id}
+                                    <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}> {customer.customer_id}</span>
                                     </Col>
                                     <Col md={3} className='text-right'>
-                                        ชื่อ-สกุล :
+                                        ชื่อ-สกุล
                                     </Col>
                                     <Col md={9}>
                                         {customer.full_name}
                                     </Col>
                                     <Col md={3} className='text-right'>
-                                        เบอร์โทร :
+                                        เบอร์โทร
                                     </Col>
                                     <Col md={9}>
                                         {customer.tel}
@@ -92,22 +91,28 @@ function DetailCustomer() {
                                         {customer.address}
                                     </Col>
                                     <Col md={3} className='text-right'>
-                                        ประเภทลูกค้า :
+                                        ประเภทลูกค้า
                                     </Col>
                                     <Col md={9}>
                                         {customer.customer_type_name}
                                     </Col>
                                     <Col md={3} className='text-right'>
-                                        รูปแบบสมาชิก :
+                                        รูปแบบ
                                     </Col>
                                     <Col md={9}>
-                                        {customer.member_type_name}
+                                       {customer.member_type_name}
                                     </Col>
                                     <Col md={3} className='text-right'>
-                                        สถานะสมาชิก :
+                                        สถานะสมาชิก
                                     </Col>
                                     <Col md={9}>
                                         {customer.member_status_name}
+                                    </Col>
+                                    <Col md={3} className='text-right'>
+                                        การชำระเงิน
+                                    </Col>
+                                    <Col md={9}>
+                                        {customer.paymentstatus_name}
                                     </Col>
                                 </Row>
                             ))}
@@ -202,7 +207,7 @@ function DetailCustomer() {
                         {/* Modal Order */}
                         <AddOrder />
                         <EditOrder />
-                        <DeleteOrder/>
+                        <DeleteOrder />
                     </Row>
                 </Card.Body>
             </Card>

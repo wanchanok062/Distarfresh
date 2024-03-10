@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import usePost from '../hook/usePost'; // Import the custom hook
 import { Form, Button, Col, Row } from "react-bootstrap";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
 
 
 function AddCustomer() {
@@ -18,10 +20,25 @@ function AddCustomer() {
   const [provider, setProvider] = useState('');
   const [customerId, setCustomerId] = useState('');
   const { post } = usePost(); // Use the custom hook
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     generateUniqueId()
   }, []);
+
+  useEffect(() => {
+    if (startDate && membership) {
+      const calculateEndDate = () => {
+        const startDateObj = new Date(startDate);
+        const endDateObj = new Date(startDateObj.getTime());
+        endDateObj.setMonth(startDateObj.getMonth() + parseInt(membership.split('-')[1]));
+        const formattedEndDate = endDateObj.toLocaleDateString();
+        setEndDate(formattedEndDate);
+      };
+      calculateEndDate();
+    }
+  }, [startDate, membership])
 
 
   // Function to generate a unique customer ID
@@ -58,7 +75,7 @@ function AddCustomer() {
   const [validated, setValidated] = useState(false);
 
 
-
+ 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -78,12 +95,12 @@ function AddCustomer() {
         member_type_id: membership,
         member_status_id: statusMember,
         employee_id: provider,
-        paymentStatus_id: paymentStatus,
+        paymentstatus_id: paymentStatus,
       };
+    
       await post(`${import.meta.env.VITE_APP_API_KEY}customer`, formData);
-      // Handle success response
-      console.log('Data posted successfully:', response.data);
-      // console.log(formData);
+      navigate(`/customer/detailcustomer/${customerId}`);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -125,7 +142,7 @@ function AddCustomer() {
                 <Col>
                   <Form.Group className="mb-3" >
                     <Form.Label>วันที่สิ้นสุด</Form.Label>
-                    <Form.Control type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
+                    <Form.Control type="text" value={endDate} onChange={(e) => setEndDate(e.target.value)} required disabled />
                     <Form.Control.Feedback type="invalid">
                       โปรดระบุวันที่สิ้นสุด.
                     </Form.Control.Feedback>
@@ -135,8 +152,8 @@ function AddCustomer() {
               <Form.Group className="mb-3" >
                 <Form.Label>ประเภทลูกค้า</Form.Label>
                 <Form.Select aria-label="Default select example" value={customerType} onChange={(e) => setCustomerType(e.target.value)} required >
-                  <option value={""}>...</option>
-                  <option value={"t-01"}>ลูกค้าใหม่</option>
+                  <option value=""></option>
+                  <option value="t-01">ลูกค้าใหม่</option>
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                   โปรดเลือกประเภทลูกค้า.
@@ -144,17 +161,23 @@ function AddCustomer() {
               </Form.Group>
               <Form.Group className="mb-3" >
                 <Form.Label>รูปแบบสมาชิก</Form.Label>
-                <Form.Select aria-label="Default select example" value={membership} onChange={(e) => setMembership(e.target.value)}>
-                  <option value="">...</option>
+                <Form.Select aria-label="Default select example" value={membership} onChange={(e) => setMembership(e.target.value)} required>
+                  <option value=""></option>
                   <option value={"m-01"}>1 เดือน</option>
                 </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  โปรดเลือกรูปแบบสมาชิก
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-3" >
                 <Form.Label>สถานะสมาชิก</Form.Label>
-                <Form.Select aria-label="Default select example" value={statusMember} onChange={(e) => setStatusMember(e.target.value)}>
-                  <option value="">...</option>
+                <Form.Select aria-label="Default select example" value={statusMember} onChange={(e) => setStatusMember(e.target.value)} required>
+                  <option value=""></option>
                   <option value={"ms-01"}>สมาชิก</option>
                 </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  โปรดเลือกสถานะสมาชิก.
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-3" >
                 <Form.Label>ที่อยู่</Form.Label>
@@ -172,10 +195,13 @@ function AddCustomer() {
               </Form.Group>
               <Form.Group className="mb-3" >
                 <Form.Label>สถานะการชำระเงิน</Form.Label>
-                <Form.Select aria-label="Default select example" value={paymentStatus} onChange={(e) => setPaymentStatus(e.target.value)}>
-                  <option value="">...</option>
+                <Form.Select aria-label="Default select example" value={paymentStatus} onChange={(e) => setPaymentStatus(e.target.value)} required >
+                  <option value=""></option>
                   <option value={"ps-1"}>รอตรวจสอบ</option>
                 </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  โปรดเลือกสถานะการชำระเงิน.
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-3" >
                 <Form.Label>ผู้จัดหา</Form.Label>
