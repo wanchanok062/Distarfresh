@@ -1,82 +1,73 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Form, Row, Col } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import useUpdateData from '../hook/useUpdateData';
 
-function EditCustomer() {
+function EditCustomer(data) {
+  const { customer_id } = useParams();
+  const { patchData } = useUpdateData();
   const [fullName, setFullName] = useState('');
-  const [fullNameError, setFullNameError] = useState(false);
-
   const [startDate, setStartDate] = useState('');
-  const [startDateError, setStartDateError] = useState(false);
-
   const [endDate, setEndDate] = useState('');
-  const [endDateError, setEndDateError] = useState(false);
-
   const [customerType, setCustomerType] = useState('');
-  const [customerTypeError, setCustomerTypeError] = useState(false);
-
   const [membership, setMembership] = useState('');
-  const [membershipError, setMembershipError] = useState(false);
-
   const [statusMember, setStatusMember] = useState('');
-  const [statusMemberError, setStatusMemberError] = useState(false);
-
   const [address, setAddress] = useState('');
-  const [addressError, setAddressError] = useState(false);
-
+  const [tel, setTel] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('');
-  const [paymentStatusError, setPaymentStatusError] = useState(false);
-
   const [provider, setProvider] = useState('');
-  const [providerError, setProviderError] = useState(false);
+  // const [customerId, setCustomerId] = useState('');
+  const [validated, setValidated] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
-    if (fullName.trim() === '') {
-      setFullNameError(true);
-    } else {
-      console.log(fullName);
+  const handleSubmit = async (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
     }
-    if (startDate.trim() === '') {
-      setStartDateError(true);
-    } else {
-      console.log(startDate);
+    try {
+      // event.preventDefault();
+      const formData = {
+        // customer_id: customerId,
+        full_name: fullName,
+        tel: tel,
+        address: address,
+        start_date: startDate,
+        exp_date: endDate,
+        customer_type_id: customerType,
+        member_type_id: membership,
+        member_status_id: statusMember,
+        employee_id: provider,
+        paymentstatus_id: paymentStatus,
+      };
+      // await post(`${import.meta.env.VITE_APP_API_KEY}customer`, formData);
+      await patchData(`${import.meta.env.VITE_APP_API_KEY}customer/${customer_id}`, formData);
+
+    } catch (error) {
+      console.log(error);
     }
-    if (endDate.trim() === '') {
-      setEndDateError(true);
-    } else {
-      console.log(endDate);
+    setValidated(true);
+  };
+  
+
+  useEffect(() => {
+    if (data.data) {
+      data.data.map((customer) => {
+        setFullName(customer.full_name);
+        setStartDate(customer.start_date.split('T')[0]);
+        setEndDate(customer.exp_date.split('T')[0]);
+        setAddress(customer.address);
+        setTel(customer.tel);
+        setCustomerType(customer.customer_type_id);
+        setMembership(customer.member_type_id);
+        setStatusMember(customer.member_status_id);
+        setPaymentStatus(customer.paymentstatus_id);
+        setProvider(customer.employee_id);
+      })
     }
-    if (customerType.trim() === '') {
-      setCustomerTypeError(true);
-    } else {
-      console.log(customerType);
-    }
-    if (membership.trim() === '') {
-      setMembershipError(true);
-    } else {
-      console.log(membership);
-    }
-    if (statusMember.trim() === '') {
-      setStatusMemberError(true);
-    } else {
-      console.log(statusMember);
-    }
-    if (address.trim() === '') {
-      setAddressError(true);
-    } else {
-      console.log(address);
-    }
-    if (paymentStatus.trim() === '') {
-      setPaymentStatusError(true);
-    } else {
-      console.log(paymentStatus);
-    }
-    if (provider.trim() === '') {
-      setProviderError(true);
-    } else {
-      console.log(provider);
-    }
-  }
+  }, [data.data])
+
   return (
     /* to DetailCustomer.jsx*/
     <div className="modal fade" id="editCustomer" aria-labelledby="editCustomerModalLabel" aria-hidden="true">
@@ -87,104 +78,95 @@ function EditCustomer() {
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div className="modal-body">
-            <form onSubmit={(e) => e.preventDefault()}>
-              <div className="mb-3">
-                <label className="form-label">รหัสสมาชิก</label>
-                <input type="text" className="form-control" placeholder="" />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">ชื่อ-สกุล</label>
-                <input type="text" name="fullName"
-                  onChange={e => setFullName(e.target.value)}
-                  className="form-control" required />
-                {/* Required. */}
-                {fullNameError && <div className="text-danger">ระบุชื่อ-สกุล</div>}
-              </div>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="mb-3">
-                    <label className="form-label">วันที่สมัคร</label>
-                    <input type="date" name="startDate"
-                      onChange={e => setStartDate(e.target.value)}
-                      className="form-control" required />
-                    {/* Required. */}
-                    {startDateError && <div className="text-danger">ระบุวันที่สมัคร</div>}
-                  </div>
+            {data.data && data.data.map((customer) => (
+              <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" >
+                  <Form.Label>รหัสสมาชิก</Form.Label>
+                  <Form.Control type="text" value={customer.customer_id} readOnly />
+                </Form.Group>
+                <Form.Group className="mb-3" >
+                  <Form.Label>ชื่อ-นามสกุล</Form.Label>
+                  <Form.Control type="text" placeholder={customer.full_name} value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+                  <Form.Control.Feedback type="invalid">
+                    โปรดระบุชื่อนามสกุล.
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Row>
+                  <Col>
+                    <Form.Group className="mb-3" >
+                      <Form.Label>วันที่สมัคร <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.start_date.split('T')[0]}</span></Form.Label>
+                      <Form.Control disabled type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
+                      <Form.Control.Feedback type="invalid">
+                        โปรดระบุวันที่สมัคร.
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group className="mb-3" >
+                      <Form.Label>วันที่สิ้นสุด <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.start_date.split('T')[0]}</span></Form.Label>
+                      <Form.Control type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
+                      <Form.Control.Feedback type="invalid">
+                        โปรดระบุวันที่สิ้นสุด.
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Form.Group className="mb-3" >
+                  <Form.Label>ประเภทลูกค้า<span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.customer_type_name.split('T')[0]}</span></Form.Label>
+                  <Form.Select  aria-label="Default select example" value={customerType} onChange={(e) => setCustomerType(e.target.value)} required >
+                    <option value={customer.customer_type_id}>{customer.customer_type_name}</option>
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    โปรดเลือกประเภทลูกค้า.
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className="mb-3" >
+                  <Form.Label>รูปแบบสมาชิก <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.member_type_name}</span></Form.Label>
+                  <Form.Select aria-label="Default select example" value={membership} onChange={(e) => setMembership(e.target.value)}>
+                    <option value={customer.member_type_id} >{customer.member_type_name}</option>
+                  </Form.Select>
+                </Form.Group>
+                <Form.Group className="mb-3" >
+                  <Form.Label>สถานะสมาชิก <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.member_status_name}</span></Form.Label>
+                  <Form.Select aria-label="Default select example" value={statusMember} onChange={(e) => setStatusMember(e.target.value)}>
+                    <option value={customer.member_status_id} >{customer.member_status_name}</option>
+                  </Form.Select>
+                </Form.Group>
+                <Form.Group className="mb-3" >
+                  <Form.Label>ที่อยู่</Form.Label>
+                  <Form.Control as="textarea" placeholder={customer.address} value={address} onChange={(e) => setAddress(e.target.value)} required />
+                  <Form.Control.Feedback type="invalid">
+                    โปรดระบุที่อยู่.
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className="mb-3" >
+                  <Form.Label>เบอร์โทร</Form.Label>
+                  <Form.Control type="text" value={tel} placeholder={customer.tel} onChange={e => setTel(e.target.value)} required />
+                  <Form.Control.Feedback type="invalid">
+                    โปรดระบุเบอร์โทร.
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className="mb-3" >
+                  <Form.Label>สถานะการชำระเงิน <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.paymentstatus_name}</span></Form.Label>
+                  <Form.Select aria-label="Default select example" value={paymentStatus} onChange={(e) => setPaymentStatus(e.target.value)} required>
+                    <option value={customer.paymentstatus_id} >{customer.paymentstatus_name}</option>
+                  </Form.Select>
+                </Form.Group>
+                <Form.Group className="mb-3" >
+                  <Form.Label>ผู้จัดหา <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.employee_name}</span></Form.Label>
+                  <Form.Select aria-label="Default select example" value={provider} onChange={(e) => setProvider(e.target.value)} required>
+                    <option value={customer.employee_id} >{customer.employee_name}</option>
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    โปรดระบุผู้จัดหา.
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
+                  <button type="submit" className="btn btn-primary">ยืนยัน</button>
                 </div>
-                <div className="col-md-6">
-                  <div className="mb-3">
-                    <label className="form-label">วันที่สิ้นสุด</label>
-                    <input type="date" name="endDate"
-                      onChange={e => setEndDate(e.target.value)}
-                      className="form-control" required />
-                    {/* Required. */}
-                    {endDateError && <div className="text-danger">ระบุวันที่สิ้นสุด</div>}
-                  </div>
-                </div>
-              </div>
-              <div className="mb-3">
-                <label className="form-label">ประเภทลูกค้า</label>
-                <select className="form-select" name="customerType"
-                  onChange={e => setCustomerType(e.target.value)}
-                  required>
-                  <option value=""></option>
-                </select>
-                {/* Required. */}
-                {customerTypeError && <div className="text-danger">ระบุประเภทลูกค้า</div>}
-              </div>
-              <div className="mb-3">
-                <label className="form-label">รูปแบบสมาชิก</label>
-                <select className="form-select" name="membership"
-                  onChange={e => setMembership(e.target.value)}
-                  required>
-                  <option value=""></option>
-                </select>
-                {/* Required. */}
-                {membershipError && <div className="text-danger">ระบุสมาชิก</div>}
-              </div>
-              <div className="mb-3">
-                <label className="form-label">สถานะสมาชิก</label>
-                <select className="form-select" name="statusMember"
-                  onChange={e => setStatusMember(e.target.value)}
-                  required>
-                  <option value=""></option>
-                </select>
-                {/* Required. */}
-                {statusMemberError && <div className="text-danger">ระบุสถานะสมาชิก</div>}
-              </div>
-              <div className="mb-3">
-                <label className="form-label">ที่อยู่</label>
-                <input type="text" name="address"
-                  onChange={e => setAddress(e.target.value)}
-                  className="form-control" required />
-                {/* Required. */}
-                {addressError && <div className="text-danger">ระบุที่อยู่</div>}
-              </div>
-              <div className="mb-3">
-                <label className="form-label">สถานะการชำระเงิน</label>
-                <select className="form-select"
-                  onChange={e => setPaymentStatus(e.target.value)}
-                  required>
-                  <option value=""></option>
-                </select>
-                {/* Required. */}
-                {paymentStatusError && <div className="text-danger">ระบุสถานะการชำระเงิน</div>}
-              </div>
-              <div className="mb-3">
-                <label className="form-label">ผู้จัดหา</label>
-                <select className="form-select"
-                  onChange={e => setProvider(e.target.value)}
-                  required>
-                  <option value=""></option>
-                </select>
-                {/* Required. */}
-                {providerError && <div className="text-danger">ระบุผู้จัดหา</div>}
-              </div>
-            </form>
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-            <button type="submit" onClick={handleSubmit} className="btn btn-primary">ยืนยัน</button>
+              </Form>
+            ))}
           </div>
         </div>
       </div>

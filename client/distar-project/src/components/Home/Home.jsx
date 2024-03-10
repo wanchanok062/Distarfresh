@@ -14,7 +14,7 @@ const Home = () => {
             {/* Routes from router */}
             <CustomersContext.Provider>
             <Routes>
-                <Route path="/customer" element={<Customrt/>} />
+                <Route path="/customer/*" element={<Customrt/>} />
                 <Route path="/customer/allcustomer" element={<AllCustomer />} />
                 <Route path="/customer/detailcustomer/:customer_id" element={<DetailCustomer />} />
             </Routes>

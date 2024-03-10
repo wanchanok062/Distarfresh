@@ -6,9 +6,9 @@ const pool = require("./db/db");
 // Use dotenv port
 const port = process.env.PORT;
 // Log messages indicating successful connection
-pool.on("connect", () => {
-  console.log("PostgreSQL database 🎊");
-});
+// pool.on("connect", () => {
+//   console.log("Database Done 🎊");
+// });
 
 // Log messages indicating errors
 pool.on("error", (err, client) => {
