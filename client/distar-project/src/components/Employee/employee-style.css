@@ -1,0 +1,29 @@
+.add-employee {
+    border: none;
+    background-color: #fff;
+    border-radius: 5px;
+    width: 130px;
+    height: 45px;
+    color: #3C60BD;
+}
+.card-employee {
+    border: none;
+}
+.edit-employee {
+    border: none;
+    border-radius: 5px;
+    background: #FBE6BD;
+    color: #CD9507;
+}
+.del-employee {
+    border: none;
+    border-radius: 5px;
+    background: #E2AEAE;
+    color: #B84A4A;
+}
+.edit-employee:hover {
+    color: #CD9507;
+}
+.del-employee:hover {
+    color: #B84A4A;
+}

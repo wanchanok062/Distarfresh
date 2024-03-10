@@ -1,0 +1,24 @@
+.add-order {
+    border: none;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #3C60BD;
+    width: 125px;
+    height: 45px;
+}
+.edit-order {
+    border: none;
+    background: #FBE6BD;
+    color: #CD9507;
+}
+.del-order {
+    border: none;
+    background: #E2AEAE;
+    color: #B84A4A;
+}
+.edit-order:hover {
+    color: #CD9507;
+}
+.del-order:hover {
+    color: #B84A4A;
+}
