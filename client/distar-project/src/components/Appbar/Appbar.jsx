@@ -4,8 +4,12 @@ import { Box, IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
 import logo from "./logo.png";
 import "./appbar-style.css";
-import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined'; 
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
+import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 const Appbar = () => {
     const [isCollapsed, setisCollapsed] = useState(false);
     const [toggled, setToggled] = useState(false);
@@ -50,18 +54,37 @@ const Appbar = () => {
                                         alignItems="center"
                                     >
                                         {/* LOGO */}
-                                        <a href="/"> <img className="logo" src={logo} alt="logo"  /></a>
-                                      
+                                        <a href="/"> <img className="logo" src={logo} alt="logo" /></a>
+
                                     </Box>
                                 </Box>
                             )}
                             {/* Link from router. */}
-                        
-                                <Link to="/customer" className="link">
-                                    <MenuItem className="menu-item" icon={<PeopleAltOutlinedIcon />}>
+                            <Link to="/schedule" className="link">
+                                <MenuItem className="menu-item" icon={<LocalShippingOutlinedIcon />}>
+                                    ตารางจัดส่งสินค้า
+                                </MenuItem>
+                            </Link>
+                            <Link to="/customer" className="link">
+                                <MenuItem className="menu-item" icon={<PeopleAltOutlinedIcon />}>
                                     ลูกค้า
-                                    </MenuItem>
-                                </Link>
+                                </MenuItem>
+                            </Link>
+                            <Link to="/orderlist" className="link">
+                                <MenuItem className="menu-item" icon={<StorefrontOutlinedIcon />}>
+                                    รายการสินค้าทั้งหมด
+                                </MenuItem>
+                            </Link>
+                            <Link to="/employee" className="link">
+                                <MenuItem className="menu-item" icon={<SupportAgentOutlinedIcon />}>
+                                    พนักงาน
+                                </MenuItem>
+                            </Link>
+                            <Link to="/management" className="link">
+                                <MenuItem className="menu-item" icon={<SettingsOutlinedIcon />}>
+                                    จัดการข้อมูล
+                                </MenuItem>
+                            </Link>
                         </Menu>
                     </div>
                 </div>
