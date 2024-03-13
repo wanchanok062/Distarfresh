@@ -19,12 +19,6 @@ const Home = () => {
     return (
         <div>
             {/* Routes from router */}
-            <CustomersContext.Provider>
-            <Routes>
-                <Route path="/customer/*" element={<Customrt/>} />
-                <Route path="/customer/allcustomer" element={<AllCustomer />} />
-                <Route path="/customer/detailcustomer/:customer_id" element={<DetailCustomer />} />
-            </Routes>
             <CustomersContext.Provider value={{ customers, setCustomers }}>
                 <Routes>
                     <Route path="/schedule" element={<Schedule />} />
