@@ -2,6 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 const customerRouter = require('./customer');
+const customerTypeRouter = require('./customer_type');
+const memberStatusRouter = require('./member_status');
 
 // Create an Express application
 const app = express();
@@ -19,6 +21,9 @@ app.use((req, res, next) => {
 
 // Use the customer router for handling customer-related routes
 app.use('/api/v1.0', customerRouter);
+app.use('/api/v1.0', customerTypeRouter);
+app.use('/api/v1.0', memberStatusRouter);
+
 
 // Export the Express application
 module.exports = app;
