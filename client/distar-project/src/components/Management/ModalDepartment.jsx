@@ -1,16 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
+import useDeleteData from "../hook/useDeleteData";
+import useUpdateData from "../hook/useUpdateData";
+import usePost from "../hook/usePost";
 
 
-const ModalDepartment = () => {
+const ModalDepartment = (department) => {
     const [validated, setValidated] = useState(false);
+    //bese API entpoint
+    const API_url = import.meta.env.VITE_APP_API_KEY;
+    //state for department data 
+    const [department_name, setDepartment_name] = useState(null)
+    //import useDelete for Delete Data
+    const { deleteData } = useDeleteData();
+    const { patchData } = useUpdateData();
+    const { post : postData } = usePost();
 
-    const handleSubmit = (event) => {
+    //set data when open modal
+    useEffect(() => {setDepartment_name(department.department_name)}, [department.department_name])
+
+    const handleUpdate = (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
         }
+        patchData(`${API_url}department/${department.department_id}`, { department_id: department.department_id, department_name: department_name });
+        setValidated(true);
+    };
+    const handleCreate = (event) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        postData(`${API_url}department`, { department_name: department_name });
         setValidated(true);
     };
     return (
@@ -25,15 +49,15 @@ const ModalDepartment = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                            <Form noValidate validated={validated} onSubmit={handleCreate} >
                                 <Form.Group>
                                     <Form.Label>แผนกงาน</Form.Label>
-                                    <Form.Control required type="text" placeholder="" />
+                                    <Form.Control onChange={(e)=>setDepartment_name(e.target.value)} required type="text" placeholder="" />
                                     <Form.Control.Feedback type="invalid">โปรดระบุแผนกงาน.</Form.Control.Feedback>
                                 </Form.Group>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                                    <button type="submit" onClick={handleSubmit} className="btn btn-primary">ยืนยัน</button>
+                                    <button type="submit"  className="btn btn-primary">ยืนยัน</button>
                                 </div>
                             </Form>
                         </div>
@@ -49,15 +73,15 @@ const ModalDepartment = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                            <Form noValidate validated={validated} onSubmit={handleUpdate}>
                                 <Form.Group>
                                     <Form.Label>แผนกงาน</Form.Label>
-                                    <Form.Control required type="text" placeholder="" />
+                                    <Form.Control onChange={(e)=>setDepartment_name(e.target.value)} defaultValue={department.department_name} required type="text" placeholder="" />
                                     <Form.Control.Feedback type="invalid">โปรดระบุแผนกงาน.</Form.Control.Feedback>
                                 </Form.Group>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                                    <button type="submit" onClick={handleSubmit} className="btn btn-primary">ยืนยัน</button>
+                                    <button type="submit"  className="btn btn-primary">ยืนยัน</button>
                                 </div>
                             </Form>
                         </div>
@@ -73,11 +97,11 @@ const ModalDepartment = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            เมื่อคุณทำการลบข้อมูลผู้ใช้งาน ข้อมูลทั้งหมดจะหายไปจากระบบทันทีและไม่สามารถกู้คืนได้กด "ลบ" หากคุณยืนยันลบข้อมูลนี้
+                            คุณต้องการลบ <span style={{ backgroundColor: '#ffc404', padding: '0.1rem', borderRadius: '10px' }}>{department.department_name}</span> ใช่หรือไม่?
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                            <button type="button" className="btn btn-danger">
+                            <button onClick={()=>deleteData(`${API_url}department/${department.department_id}`)} type="button" className="btn btn-danger" data-bs-dismiss="modal">
                                 ลบ
                             </button>
                         </div>

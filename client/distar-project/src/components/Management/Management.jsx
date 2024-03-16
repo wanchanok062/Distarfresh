@@ -12,13 +12,47 @@ import UserRoleManagement from "./Management Component/UserRoleManagement";
 import PaymentManagement from "./Management Component/PaymentManagement";
 import StatusOperationManagement from "./Management Component/StatusOperationManagement";
 import DepartmentManagement from "./Management Component/DepartmentManagement";
+import { useParams,useNavigate } from 'react-router-dom';
+
+
+
 const Management = () => {
+    const componentName  = useParams();
+    const navigate = useNavigate();
+
     const [value, setValue] = useState('1');
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const handleChange = (event,newValue) => {
+        if (newValue !== value) {
+            setValue(newValue);
+        }
     };
-
+    switch (componentName.component) {
+        case 'customer_type':
+            handleChange('','1')
+            break;
+        case 'member_status':
+            handleChange('','2')
+            break;
+        case 'member_type':
+            handleChange('','3')
+            break;
+        case 'payment_status':
+            handleChange('','5')
+            break;
+        case 'employee_role':
+            handleChange('','7')
+            break;
+        case 'product_category':
+            handleChange('','4')
+            break;    
+        case 'operation':
+            handleChange('','6')
+            break;
+        case 'department':
+            handleChange('','8')
+            break;
+    }
     return (
         <Container>
             <Row className="mb-3">
@@ -43,14 +77,14 @@ const Management = () => {
                                     allowScrollButtonsMobile
                                 >
                                     {/* Tab */}
-                                    <Tab sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="ประเภทลูกค้า" value="1" />
-                                    <Tab sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="สถานะสมาชิก" value="2" />
-                                    <Tab sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="รูปแบบสมาชิก" value="3" />
-                                    <Tab sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="หมวดหมู่สินค้า" value="4" />
-                                    <Tab sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="การชำระเงิน" value="5" />
-                                    <Tab sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="การดำเนินงาน" value="6" />
-                                    <Tab sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="บทบาทผู้ใช้งาน" value="7" />
-                                    <Tab sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="แผนกงาน" value="8" />
+                                    <Tab onClick={()=>navigate('/management/customer_type')} sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="ประเภทลูกค้า" value="1" />
+                                    <Tab onClick={()=>navigate('/management/member_status')} sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="สถานะสมาชิก" value="2" />
+                                    <Tab onClick={()=>navigate('/management/member_type')} sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="รูปแบบสมาชิก" value="3" />
+                                    <Tab onClick={()=>navigate('/management/product_category')} sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="หมวดหมู่สินค้า" value="4" />
+                                    <Tab onClick={()=>navigate('/management/payment_status')} sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="การชำระเงิน" value="5" />
+                                    <Tab onClick={()=>navigate('/management/operation')} sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="การดำเนินงาน" value="6" />
+                                    <Tab onClick={()=>navigate('/management/employee_role')} sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="บทบาทผู้ใช้งาน" value="7" />
+                                    <Tab onClick={()=>navigate('/management/department')} sx={{ fontFamily: 'Kanit', fontSize: '18px' }} label="แผนกงาน" value="8" />
                                 </TabList>
                             </Box>
                             {/* !!! Tab Content !!! */}

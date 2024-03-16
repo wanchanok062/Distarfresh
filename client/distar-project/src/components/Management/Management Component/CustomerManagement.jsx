@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row, Card } from "react-bootstrap";
 import AddIcon from '@mui/icons-material/Add';
 import ModalCustomer from "../ModalCustomer";
+import useFetch from "../../hook/useFetch";
+
 
 const CustomerManagement = () => {
+    const API_url = import.meta.env.VITE_APP_API_KEY;
+    const { data: customer_type } = useFetch(`${API_url}/customer_type`);
+    const [customer_type_id, setcustomer_type_id] = useState(null);
+    const [customer_type_name, setcustomer_type_name] = useState(null);
+
+
     return (
         // ประเภทลูกค้า
         <div>
@@ -31,7 +39,7 @@ const CustomerManagement = () => {
                             <Col className="text-center" md={2}>
                                 <div>ลำดับ</div>
                             </Col>
-                            <Col className="text-center" md={2}>
+                            <Col className="text-left" md={2}>
                                 <div>ประเภทลูกค้า</div>
                             </Col>
                             <Col md={8}>
@@ -39,27 +47,35 @@ const CustomerManagement = () => {
                             </Col>
                         </Row>
                         <hr className="mx-4" />
-                        <Row className="mx-3 mb-3">
-                            <Col className="text-center" md={2}>
-                                <div>1</div>
-                            </Col>
-                            <Col md={2} className="text-center">
-                                <div>ลูกค้าใหม่</div>
-                            </Col>
-                            <Col md={8} className="d-flex justify-content-end gap-2">
-                                <button data-bs-toggle="modal" data-bs-target="#editTypeCustomer" className="edit btn btn-sm">
-                                    แก้ไข
-                                </button>
-                                <button data-bs-toggle="modal" data-bs-target="#deleteTypeCustomer" className="del btn btn-sm">
-                                    ลบ
-                                </button>
-                            </Col>
-                        </Row>
+                        {
+                            customer_type && customer_type.map((item, index) => {
+                                return (
+                                    <div key={index}>
+                                        <Row className="mx-3 mb-3">
+                                            <Col className="text-center" md={2}>
+                                                <div>{index + 1}</div>
+                                            </Col>
+                                            <Col md={4} className="text-left">
+                                                <div>{item.customer_type_name}</div>
+                                            </Col>
+                                            <Col md={6} className="d-flex justify-content-end gap-2">
+                                                <button data-bs-toggle="modal" data-bs-target="#editTypeCustomer" onClick={() => { setcustomer_type_id(item.customer_type_id); setcustomer_type_name(item.customer_type_name); }} className="edit btn btn-sm">
+                                                    แก้ไข
+                                                </button>
+                                                <button data-bs-toggle="modal" onClick={() => { setcustomer_type_id(item.customer_type_id); setcustomer_type_name(item.customer_type_name); }} data-bs-target="#deleteTypeCustomer" className="del btn btn-sm">
+                                                    ลบ
+                                                </button>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                )
+                            })
+                        }
                     </Card>
                 </Col>
             </Row>
             {/* Modal */}
-            <ModalCustomer />
+            <ModalCustomer customer_type_id={customer_type_id} customer_type_name={customer_type_name} />
         </div>
     )
 }
