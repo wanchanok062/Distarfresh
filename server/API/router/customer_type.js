@@ -2,6 +2,7 @@ const express = require("express");
 const pool = require("../db/db");
 
 const router = express.Router();
+const generateUniqueID = require("./generate_id");
 
 //flind all customer_type
 router.get("/customer_type", async (req, res) => {
@@ -25,24 +26,10 @@ router.get("/customer_type/:id", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-//generate customer UniqueID
-const generateUniqueID = async () => {
-  let id;
-  let isUnique = false;
-  while (!isUnique) {
-    id = "t-" + Math.floor(Math.random() * 100 + 1).toString().padStart(2, "0");
-    const checkQuery = `SELECT customer_type_id FROM customer_type WHERE customer_type_id = $1`;
-    const { rows } = await pool.query(checkQuery, [id]);
-    if (rows.length === 0) {
-      isUnique = true;
-    }
-  }
-  return id;
-};
 //create customer_type
 router.post("/customer_type", async (req, res) => {
   try {
-    const id = await generateUniqueID();
+    const id = await generateUniqueID("ct-", "customer_type_id", "customer_type");
     const query = `INSERT INTO customer_type (customer_type_id, customer_type_name) VALUES ($1, $2) RETURNING *`;
     const { rows } = await pool.query(query, [id, req.body.customer_type_name]);
     res.status(201).json(rows);

@@ -4,6 +4,7 @@ import useDeleteData from "../hook/useDeleteData";
 import useUpdateData from "../hook/useUpdateData";
 import usePost from "../hook/usePost";
 
+
 const ModalCustomer = (customer_type) => {
     const [validated, setValidated] = useState(false);
     const API_url = import.meta.env.VITE_APP_API_KEY;
@@ -60,7 +61,7 @@ const ModalCustomer = (customer_type) => {
                                 </Form.Group>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                                    <button type="submit"  className="btn btn-primary">ยืนยัน</button>
+                                    <button type="button" onClick={handlePost}  className="btn btn-primary">ยืนยัน</button>
                                 </div>
                             </Form>
                         </div>
@@ -76,7 +77,7 @@ const ModalCustomer = (customer_type) => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                            <Form noValidate validated={validated}>
                                 <Form.Group>
                                     <Form.Label>ประเภทลูกค้า</Form.Label>
                                     <Form.Control onChange={(e)=>setCustomer_name_data(e.target.value)} required type="text" defaultValue={customer_name_data} placeholder="" />
@@ -84,7 +85,7 @@ const ModalCustomer = (customer_type) => {
                                 </Form.Group>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                                    <button type="submit" onClick={handleSubmit} className="btn btn-primary">ยืนยัน</button>
+                                    <button type="button" onClick={handleSubmit} data-bs-dismiss="modal" className="btn btn-primary">ยืนยัน</button>
                                 </div>
                             </Form>
                         </div>
@@ -104,7 +105,7 @@ const ModalCustomer = (customer_type) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                            <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={() => { deleteData(`${API_url}customer_type/${customerTypeID}`); }}>
+                            <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={() => { deleteData(`${API_url}customer_type/${customerTypeID}`);}}>
                                 ลบ
                             </button>
                         </div>

@@ -80,7 +80,7 @@ const Appbar = () => {
                                     พนักงาน
                                 </MenuItem>
                             </Link>
-                            <Link to="/management" className="link">
+                            <Link to="/management/customer_type" className="link">
                                 <MenuItem className="menu-item" icon={<SettingsOutlinedIcon />}>
                                     จัดการข้อมูล
                                 </MenuItem>

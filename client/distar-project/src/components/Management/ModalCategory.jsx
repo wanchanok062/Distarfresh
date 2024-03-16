@@ -1,8 +1,26 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Form } from "react-bootstrap";
+import useDeleteData from "../hook/useDeleteData";
+import useUpdateData from "../hook/useUpdateData";
+import usePost from "../hook/usePost";
 
-const ModalCategory = () => {
+
+const ModalCategory = (product_category) => {
     const [validated, setValidated] = useState(false);
+    //bese API entpoint
+    const API_url = import.meta.env.VITE_APP_API_KEY;
+    //state for set data when open modal
+    const [product_category_name, setProduct_category_name] = useState(null);
+
+    //import useDelete for Delete Data and useUpdate for Update Data
+    const { deleteData } = useDeleteData();
+    const { patchData } = useUpdateData();
+    const { post : postData } = usePost();
+
+    //set data when open modal by use Effect
+    useEffect(() => {
+        setProduct_category_name(product_category.product_category_name)
+    },[product_category.product_category_name])
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
@@ -10,6 +28,16 @@ const ModalCategory = () => {
             event.preventDefault();
             event.stopPropagation();
         }
+        patchData( `${API_url}product_category/${product_category.product_category_id}`, {product_category_id: product_category.product_category_id, product_category_name: product_category_name });
+        setValidated(true);
+    };
+    const handleCreate = (event) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        postData(`${API_url}product_category`, { product_category_name: product_category_name});
         setValidated(true);
     };
     return (
@@ -24,15 +52,15 @@ const ModalCategory = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                            <Form noValidate validated={validated} onSubmit={handleCreate}>
                                 <Form.Group>
                                     <Form.Label>หมวดหมู่สินค้า</Form.Label>
-                                    <Form.Control required type="text" placeholder="" />
+                                    <Form.Control onChange={(e) => setProduct_category_name(e.target.value)} required type="text" placeholder="" />
                                     <Form.Control.Feedback type="invalid">โปรดระบุหมวดหมู่สินค้า.</Form.Control.Feedback>
                                 </Form.Group>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                                    <button type="submit" onClick={handleSubmit} className="btn btn-primary">ยืนยัน</button>
+                                    <button type="submit" className="btn btn-primary">ยืนยัน</button>
                                 </div>
                             </Form>
                         </div>
@@ -51,12 +79,12 @@ const ModalCategory = () => {
                             <Form noValidate validated={validated} onSubmit={handleSubmit}>
                                 <Form.Group>
                                     <Form.Label>หมวดหมู่สินค้า</Form.Label>
-                                    <Form.Control required type="text" placeholder="" />
+                                    <Form.Control onChange={(e) => setProduct_category_name(e.target.value)} defaultValue={product_category.product_category_name} required type="text" placeholder="" />
                                     <Form.Control.Feedback type="invalid">โปรดระบุหมวดหมู่สินค้า.</Form.Control.Feedback>
                                 </Form.Group>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                                    <button type="submit" onClick={handleSubmit} className="btn btn-primary">ยืนยัน</button>
+                                    <button type="submit" className="btn btn-primary">ยืนยัน</button>
                                 </div>
                             </Form>
                         </div>
@@ -72,11 +100,11 @@ const ModalCategory = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            เมื่อคุณทำการลบข้อมูลผู้ใช้งาน ข้อมูลทั้งหมดจะหายไปจากระบบทันทีและไม่สามารถกู้คืนได้กด "ลบ" หากคุณยืนยันลบข้อมูลนี้
+                        คุณต้องการลบ <span style={{ backgroundColor: '#ffc404', padding: '0.1rem', borderRadius: '10px' }}>{product_category.product_category_name}</span> ใช่หรือไม่?
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                            <button type="button" className="btn btn-danger">
+                            <button onClick={()=>deleteData(`${API_url}product_category/${product_category.product_category_id}`)} type="button" className="btn btn-danger" data-bs-dismiss="modal">
                                 ลบ
                             </button>
                         </div>

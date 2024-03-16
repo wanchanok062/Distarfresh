@@ -3,10 +3,13 @@ import { Card, Col, Row } from "react-bootstrap";
 import ModalStatusMember from "../ModalStatusMember";
 import AddIcon from '@mui/icons-material/Add';
 import useFetch from "../../hook/useFetch";
+import { useState } from "react";
 
 const StatusMemberManagement = () => {
     const API_url = import.meta.env.VITE_APP_API_KEY;
     const { data: memberStatus } = useFetch(`${API_url}member_status`);
+    const [member_status_id, setMember_status_id] = useState(null);
+    const [member_status_name, setMember_status_name] = useState(null);
     // console.log(memberStatus);
     return (
         // สถานะสมาชิก
@@ -55,10 +58,10 @@ const StatusMemberManagement = () => {
                                                 <div>{item.member_status_name}</div>
                                             </Col>
                                             <Col md={7} className="d-flex justify-content-end gap-2">
-                                                <button data-bs-toggle="modal" data-bs-target="#editStatusMember" className="edit btn btn-sm">
+                                                <button data-bs-toggle="modal" data-bs-target="#editStatusMember" className="edit btn btn-sm" onClick={()=>{setMember_status_id(item.member_status_id);setMember_status_name(item.member_status_name)}}>
                                                     แก้ไข
                                                 </button>
-                                                <button data-bs-toggle="modal" data-bs-target="#deleteStatusMember" className="del btn btn-sm">
+                                                <button data-bs-toggle="modal" data-bs-target="#deleteStatusMember" className="del btn btn-sm" onClick={()=>{setMember_status_id(item.member_status_id);setMember_status_name(item.member_status_name)}}>
                                                     ลบ
                                                 </button>
                                             </Col>
@@ -71,8 +74,8 @@ const StatusMemberManagement = () => {
                 </Col>
             </Row>
             {/* Modal */}
-            <ModalStatusMember />
+            <ModalStatusMember member_status_id={member_status_id} member_status_name={member_status_name}  />
         </div>
     )
 }
-export default StatusMemberManagement;
+export default StatusMemberManagement; 

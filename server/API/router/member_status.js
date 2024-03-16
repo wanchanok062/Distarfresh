@@ -2,6 +2,7 @@ const express = require("express");
 const pool = require("../db/db");
 
 const router = express.Router();
+const   generateUniqueID = require("./generate_id");
 
 //flind all member_status
 router.get("/member_status", async (req, res) => {
@@ -25,24 +26,11 @@ router.get("/member_status/:id", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-//generate member_status UniqueID
-const generateUniqueID = async () => {
-  let id;
-  let isUnique = false;
-  while (!isUnique) {
-    id = "ms-" + Math.floor(Math.random() * 100 + 1).toString().padStart(2, "0");
-    const checkQuery = `SELECT member_status_id FROM member_status WHERE member_status_id = $1`;
-    const { rows } = await pool.query(checkQuery, [id]);
-    if (rows.length === 0) {
-      isUnique = true;
-    }
-  }
-  return id;
-};
+
 //create member_status  
 router.post("/member_status", async (req, res) => {
   try {
-    const id = await generateUniqueID();
+    const id = await generateUniqueID("ms-", "member_status_id", "member_status");
     const query = `INSERT INTO member_status (member_status_id, member_status_name) VALUES ($1, $2) RETURNING *`;
     const { rows } = await pool.query(query, [id, req.body.member_status_name]);
     res.status(201).json(rows);

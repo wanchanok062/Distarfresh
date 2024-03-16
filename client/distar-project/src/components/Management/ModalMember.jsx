@@ -1,16 +1,41 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Form } from "react-bootstrap";
+import useDeleteData from "../hook/useDeleteData";
+import useUpdateData from "../hook/useUpdateData";
+import usePost from "../hook/usePost";
 
-
-const ModalMember = () => {
+const ModalMember = (member_type) => {
     const [validated, setValidated] = useState(false);
+    //state for store data member_type
+    const [member_type_name,setMember_type_name] = useState('');
+    const API_url = import.meta.env.VITE_APP_API_KEY;
 
-    const handleSubmit = (event) => {
+    //import useUpdate for Update Data and useDelete for Delete Data 
+    const { patchData } = useUpdateData();
+    const { deleteData } = useDeleteData();
+    const { post : postData } = usePost();
+
+    //get member_type when click edit
+    useEffect(() => {
+        setMember_type_name(member_type.member_type_name)
+    } ,[member_type.member_type_name])
+
+    const handleEdit = (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
         }
+        patchData( `${API_url}member_type/${member_type.member_type_id}`, { member_type_id: member_type.member_type_id, member_type_name: member_type_name });
+        setValidated(true);
+    };
+    const handleCreate = (event) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        postData(`${API_url}member_type`, { member_type_name: member_type_name });
         setValidated(true);
     };
     return (
@@ -25,15 +50,15 @@ const ModalMember = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                            <Form noValidate validated={validated} onSubmit={handleCreate} >
                                 <Form.Group>
                                     <Form.Label>รูปแบบสมาชิก</Form.Label>
-                                    <Form.Control required type="text" placeholder="" />
+                                    <Form.Control onChange={(e)=>setMember_type_name(e.target.value)} required type="text" placeholder="" />
                                     <Form.Control.Feedback type="invalid">โปรดระบุรูปแบบสมาชิก.</Form.Control.Feedback>
                                 </Form.Group>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                                    <button type="submit" onClick={handleSubmit} className="btn btn-primary">ยืนยัน</button>
+                                    <button type="submit"  className="btn btn-primary">ยืนยัน</button>
                                 </div>
                             </Form>
                         </div>
@@ -49,15 +74,15 @@ const ModalMember = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                            <Form noValidate validated={validated} onSubmit={handleEdit}>
                                 <Form.Group>
                                     <Form.Label>รูปแบบสมาชิก</Form.Label>
-                                    <Form.Control required type="text" placeholder="" />
+                                    <Form.Control onChange={(e)=>{setMember_type_name(e.target.value)}} defaultValue={member_type.member_type_name} required type="text" placeholder="" />
                                     <Form.Control.Feedback type="invalid">โปรดระบุรูปแบบสมาชิก.</Form.Control.Feedback>
                                 </Form.Group>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                                    <button type="submit" onClick={handleSubmit} className="btn btn-primary">ยืนยัน</button>
+                                    <button type="submit" className="btn btn-primary">ยืนยัน</button>
                                 </div>
                             </Form>
                         </div>
@@ -77,7 +102,7 @@ const ModalMember = () => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                            <button type="button" className="btn btn-danger">
+                            <button onClick={()=>deleteData(`${API_url}member_type/${member_type.member_type_id}`)}data-bs-dismiss="modal" type="button" className="btn btn-danger">
                                 ลบ
                             </button>
                         </div>
