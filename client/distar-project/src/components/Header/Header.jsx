@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <Box className="header" display="flex" justifyContent="space-between" p={2}>
       {/* headerbar left */}
-      <Box display="flex" borderRadius="3px" backgroundColor="#F5EFE7">
+      <Box display="flex" borderRadius="10px" backgroundColor="#F5EFE7">
         <button onClick={() => history(-1)} className="btn-back">Back</button>
       </Box>
 

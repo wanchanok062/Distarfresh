@@ -24,9 +24,10 @@
     border-radius: 5px;
 }
 
-.card-detail {
+#card-detail {
     border: none;
     font-size: 18px;
+    overflow-y: auto;
 }
 
 .card-piechart {
@@ -36,6 +37,7 @@
 
 .card-order {
     border: none;
+    height: 100%;
 }
 
 #add-order {
@@ -51,4 +53,14 @@
 #del-order {
     background: #E2AEAE;
     color: #B84A4A;
+}
+.piechart-container {
+    width: 400px;
+    height: 400px;
+}
+.title {
+    font-size: 18px;
+}
+.card-body {
+    height: 350px;
 }
