@@ -1,18 +1,75 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
+import useFetch from '../hook/useFetch'
+import usePost from "../hook/usePost";
+import useDeleteData from "../hook/useDeleteData";
+import useUpdateData from "../hook/useUpdateData";
 
 
-const ModalOrder = () => {
+const ModalOrder = (products) => {
     const [validated, setValidated] = useState(false);
+    const API_url = import.meta.env.VITE_APP_API_KEY;
+    const { data: category } = useFetch(`${API_url}product_category`);
+    const [product_name, setProduct_name] = useState('')
+    const [product_category, setProduct_category] = useState('')
+    const { post } = usePost(`${API_url}product`);
+    const { deleteData } = useDeleteData();
+    const { patchData } = useUpdateData();
 
-    const handleSubmit = (event) => {
+    useEffect(() => {
+        setProduct_name(products.product_name)
+        setProduct_category(products.product_category)
+    }, [products.product_name])
+
+    const handleSubmit = async (event) => {
         const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
+        event.preventDefault();
+        event.stopPropagation();
         setValidated(true);
+
+        if (form.checkValidity() === false) {
+            return;
+        }
+        try {
+            const formData = {
+                product_name: product_name,
+                amounts: 0,
+                product_category: product_category
+            };
+            // ตรวจสอบเงื่อนไขว่า formData ไม่เป็นค่าว่าง
+            if (Object.values(formData).every(value => value !== '') && Object.values(formData).every(value => value !== null)) {
+                event.preventDefault();
+                await post(`${API_url}product`, formData);
+                window.location.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const handleEdit = async (event) => {
+        const form = event.currentTarget;
+        event.preventDefault();
+        event.stopPropagation();
+        setValidated(true);
+
+        if (form.checkValidity() === false) {
+            return;
+        }
+        try {
+            const formData = {
+                product_name: product_name,
+                amounts: 0,
+                product_category: product_category
+            };
+            // ตรวจสอบเงื่อนไขว่า formData ไม่เป็นค่าว่าง
+            if (Object.values(formData).every(value => value !== '')) {
+                await patchData(`${API_url}product/${products.product_id}`, formData);
+                console.log(formData);
+                window.location.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
     return (
         /* Add Order List */
@@ -25,17 +82,24 @@ const ModalOrder = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                            <Form noValidate validated={validated} >
                                 <Form.Group>
                                     <Form.Label>ชื่อสินค้า</Form.Label>
-                                    <Form.Control required type="text" placeholder="" />
+                                    <Form.Control onChange={(e) => setProduct_name(e.target.value)} required type="text" placeholder="" />
                                     <Form.Control.Feedback type="invalid">โปรดระบุชื่อสินค้า.</Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Label>หมวดหมู่</Form.Label>
-                                    <Form.Select aria-label="Default select example" required >
-                                        <option value="">...</option>
+                                    <Form.Select onChange={(e) => setProduct_category(e.target.value)} aria-label="Default select example" required >
+                                        <option value=""></option>
+                                        {category && category.map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.product_category_name}>{item.product_category_name}</option>
+                                            )
+                                        })
+                                        }
                                     </Form.Select>
+                                    <Form.Control.Feedback type="invalid">โปรดระบุหมวดหมู่สินค้า</Form.Control.Feedback>
                                 </Form.Group>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
@@ -55,21 +119,29 @@ const ModalOrder = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                            <Form noValidate validated={validated}>
+                                {/* form name product */}
                                 <Form.Group>
                                     <Form.Label>ชื่อสินค้า</Form.Label>
-                                    <Form.Control required type="text" placeholder="" />
+                                    <Form.Control defaultValue={products.product_name} onChange={(e) => setProduct_name(e.target.value)} required type="text" placeholder="" />
                                     <Form.Control.Feedback type="invalid">โปรดระบุชื่อสินค้า.</Form.Control.Feedback>
                                 </Form.Group>
+                                {/* form product category */}
                                 <Form.Group>
-                                    <Form.Label>หมวดหมู่</Form.Label>
-                                    <Form.Select aria-label="Default select example" required >
-                                        <option value="">...</option>
+                                    <Form.Label className="my-3">หมวดหมู่ <span style={{ backgroundColor: '#ffc404', padding: '0.1rem', borderRadius: '10px' }}>{products.product_category}</span></Form.Label>
+                                    <Form.Select value={product_category} onChange={(e) => setProduct_category(e.target.value)} aria-label="Default select example" required >
+                                        {
+                                            category && category.map((item, index) => {
+                                                return (
+                                                    <option key={index} value={item.product_category_name}>{item.product_category_name}</option>
+                                                )
+                                            })
+                                        }
                                     </Form.Select>
                                 </Form.Group>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                                    <button type="submit" onClick={handleSubmit} className="btn btn-primary">ยืนยัน</button>
+                                    <button type="submit" onClick={handleEdit} className="btn btn-primary">ยืนยัน</button>
                                 </div>
                             </Form>
                         </div>
@@ -85,11 +157,11 @@ const ModalOrder = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            เมื่อคุณทำการลบข้อมูลผู้ใช้งาน ข้อมูลทั้งหมดจะหายไปจากระบบทันทีและไม่สามารถกู้คืนได้กด "ลบ" หากคุณยืนยันลบข้อมูลนี้
+                            คุณต้องการลบ <span style={{ backgroundColor: '#ffc404', padding: '0.1rem', borderRadius: '10px' }}>{products.product_name}</span> ใช่หรือไม่?
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                            <button type="button" className="btn btn-danger">
+                            <button onClick={() => deleteData(`${API_url}product/${products.product_id}`)} type="button" className="btn btn-danger" data-bs-dismiss="modal">
                                 ลบ
                             </button>
                         </div>

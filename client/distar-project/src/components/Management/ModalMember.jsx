@@ -98,7 +98,7 @@ const ModalMember = (member_type) => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            เมื่อคุณทำการลบข้อมูลผู้ใช้งาน ข้อมูลทั้งหมดจะหายไปจากระบบทันทีและไม่สามารถกู้คืนได้กด "ลบ" หากคุณยืนยันลบข้อมูลนี้
+                        คุณต้องการลบ <span style={{ backgroundColor: '#ffc404', padding: '0.1rem', borderRadius: '10px' }}>{member_type_name}</span> ใช่หรือไม่?
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>

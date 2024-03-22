@@ -10,6 +10,8 @@ const employeeRoleRouter = require('./employee_role');
 const productCategoryRouter = require('./product_category');
 const operationRouter = require('./operation');
 const departmentRouter =require('./department');
+const productsRouter = require('./products');
+const employeeRouter = require('./employee');
 
 // Create an Express application
 const app = express();
@@ -35,6 +37,8 @@ app.use('/api/v1.0', employeeRoleRouter);
 app.use('/api/v1.0', productCategoryRouter);
 app.use('/api/v1.0', operationRouter);
 app.use('/api/v1.0', departmentRouter);
+app.use('/api/v1.0', productsRouter);
+app.use('/api/v1.0', employeeRouter);
 
 // Export the Express application
 module.exports = app;
