@@ -17,7 +17,7 @@ const LoginUser = () => {
         setValidated(true);
     };
     return (
-        <Container style={{padding: '150px'}} className='mt-5 d-flex justify-content-center align-content-center'>
+        <Container style={{padding: '100px'}} className='mt-5 d-flex justify-content-center align-content-center'>
             <Row>
                 <Col>
                     <Card className='login-card'>

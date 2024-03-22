@@ -4,8 +4,8 @@ import { Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const history = useNavigate();
-
+  const navigate = useNavigate();
+  
   return (
     <Box className="header" display="flex" justifyContent="space-between" p={2}>
       {/* headerbar left */}

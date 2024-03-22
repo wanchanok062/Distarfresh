@@ -30,7 +30,7 @@ const Home = () => {
                     <Route path="/customer/detailcustomer/:customer_id" element={<DetailCustomer />} />
                     <Route path="/orderlist" element={<OrderList />} />
                     <Route path="/employee" element={<Employee />} />
-                    <Route path="/management" element={<Management />} />
+                    <Route path="/management/:component" element={<Management />} />
                     <Route path="/login" element={<Login />} />
                 </Routes>
             </CustomersContext.Provider>
