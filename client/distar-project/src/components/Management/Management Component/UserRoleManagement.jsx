@@ -36,7 +36,7 @@ const UserRoleManagement = () => {
                     <Card id="card-list">
                         <Row className="mx-3 mt-3">
                             <Col className="text-center" md={2}>
-                                <div>ลำดับ</div>
+                                <div>รหัส</div>
                             </Col>
                             <Col className="text-center" md={2}>
                                 <div>บทบาทผู้ใช้งาน</div>
@@ -52,7 +52,7 @@ const UserRoleManagement = () => {
                                     <div key={index}>
                                         <Row className="mx-3 mb-3">
                                             <Col className="text-center" md={2}>
-                                                <div>{index + 1}</div>
+                                                <div>{item.role_id}</div>
                                             </Col>
                                             <Col md={2} className="text-center">
                                                 <div>{item.role_name}</div>

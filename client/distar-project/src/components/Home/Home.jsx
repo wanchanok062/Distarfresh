@@ -8,12 +8,14 @@ import { createContext, useState } from "react";
 import OrderList from "../Orderlist/OrderList";
 import Employee from "../Employee/Employee";
 import Schedule from "../Schedule/Schedule";
+import Dashboard from "../Dashboard/Dashboard";
 export const CustomersContext = createContext();
+
 
 const Home = () => {
     // Assuming customer data is fetched using useFetch hook
     const [customers, setCustomers] = useState([]);
-
+    
     // Fetch customers data here using useFetch hook and set it using setCustomers
 
     return (
@@ -21,6 +23,7 @@ const Home = () => {
             {/* Routes from router */}
             <CustomersContext.Provider value={{ customers, setCustomers }}>
                 <Routes>
+                    <Route path="/" element={<Dashboard />} />
                     <Route path="/schedule" element={<Schedule />} />
                     <Route path="/customer" element={<Customrt />} />
                     <Route path="/customer/allcustomer" element={<AllCustomer />} />

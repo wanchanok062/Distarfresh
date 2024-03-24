@@ -4,17 +4,23 @@ import { Box, IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
 import logo from "./logo.png";
 import "./appbar-style.css";
+import AutoAwesomeMosaicOutlinedIcon from '@mui/icons-material/AutoAwesomeMosaicOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 const Appbar = () => {
     const [isCollapsed, setisCollapsed] = useState(false);
     const [toggled, setToggled] = useState(false);
     const [broken, setBroken] = useState(false);
 
+    function handleLogout() {
+        localStorage.removeItem('accessToken');
+    }
+    
     return (
         <div>
             <Sidebar
@@ -60,6 +66,11 @@ const Appbar = () => {
                                 </Box>
                             )}
                             {/* Link from router. */}
+                            <Link to="/" className="link">
+                                <MenuItem className="menu-item" icon={<AutoAwesomeMosaicOutlinedIcon />}>
+                                    ภาพรวม
+                                </MenuItem>
+                            </Link>
                             <Link to="/schedule" className="link">
                                 <MenuItem className="menu-item" icon={<LocalShippingOutlinedIcon />}>
                                     ตารางจัดส่งสินค้า
@@ -83,6 +94,11 @@ const Appbar = () => {
                             <Link to="/management/customer_type" className="link">
                                 <MenuItem className="menu-item" icon={<SettingsOutlinedIcon />}>
                                     จัดการข้อมูล
+                                </MenuItem>
+                            </Link>
+                            <Link className="link">
+                                <MenuItem onClick={() => handleLogout()}  className="menu-item" icon={<LogoutOutlinedIcon />}>
+                                    ออกจากระบบ
                                 </MenuItem>
                             </Link>
                         </Menu>

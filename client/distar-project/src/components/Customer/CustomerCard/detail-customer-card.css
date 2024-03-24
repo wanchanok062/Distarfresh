@@ -1,0 +1,70 @@
+.card-detail-customer {
+    border: none;
+}
+.color-1 {
+    width: 10px;
+    height: 100%;
+    background: #4170E8;
+    position: absolute;
+    border-top-left-radius: 5px; 
+    border-bottom-left-radius: 5px; 
+    left: 0;
+    top: 0;
+}
+.color-2 {
+    width: 10px;
+    height: 100%;
+    background: #EEAF10;
+    position: absolute;
+    border-top-left-radius: 5px; 
+    border-bottom-left-radius: 5px; 
+    left: 0;
+    top: 0;
+}
+.color-3 {
+    width: 10px;
+    height: 100%;
+    background: #3FAF39;
+    position: absolute;
+    border-top-left-radius: 5px; 
+    border-bottom-left-radius: 5px; 
+    left: 0;
+    top: 0;
+}
+.color-4 {
+    width: 10px;
+    height: 100%;
+    background: #F92A2A;
+    position: absolute;
+    border-top-left-radius: 5px; 
+    border-bottom-left-radius: 5px; 
+    left: 0;
+    top: 0;
+}
+.title-card {
+    font-size: 24px;
+}
+.icon-1 {
+    background-color: #C9D7FB;
+    border-radius: 5px;
+    color: #3C60BD;
+}
+.icon-2 {
+    background-color: #FEE1A9;
+    border-radius: 5px;
+    color: #DCA008;
+}
+.icon-3 {
+    background-color: #BEF3BC;
+    border-radius: 5px;
+    color: #2B6E36;
+}
+.icon-4 {
+    background-color: #FFC2C2;
+    border-radius: 5px;
+    color: #AF2F2F;
+}
+.text-data {
+    font-size: 32px;
+}
+

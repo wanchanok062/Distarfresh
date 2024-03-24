@@ -1,13 +1,13 @@
 import './customer-list-style.css';
-import { Card, Col, Row } from 'react-bootstrap'; // Import Button from react-bootstrap
+import { Card, Col, Row, Form, FormControl } from 'react-bootstrap'; // Import Button from react-bootstrap
 import { Link } from 'react-router-dom';
 import useFetch from '../hook/useFetch';
 
 
 
 function CustomerList() {
-    
-    
+
+
     const { data: customers } = useFetch(`${import.meta.env.VITE_APP_API_KEY}customers`);
     return (
         <div>
@@ -16,29 +16,35 @@ function CustomerList() {
             <Card id='customer-card' className='mt-3'>
                 <Row className='m-3'>
                     <Col>
-                        ลูกค้า
-
+                        <div className='title'>ลูกค้า</div>
                     </Col>
                 </Row>
                 {/* Filter */}
                 <Row className=' ms-auto mx-3 mb-3'>
                     <Col md={3} className='mb-2 mb-md-0'>
-                        <select id='statusMemberFilter' className='form-select'>
+                        <Form.Select id='statusMemberFilter' size='sm' className='form-select'>
                             <option value="" disabled selected>สถานะสมาชิก</option>
-                        </select>
+                        </Form.Select>
                     </Col>
                     <Col md={3} className='mb-2 mb-md-0'>
-                        <select id='typeCustomerFilter' className='form-select'>
+                        <Form.Select id='typeCustomerFilter' size='sm' className='form-select'>
                             <option value="" disabled selected>ประเภทลูกค้า</option>
-                        </select>
+                        </Form.Select>
                     </Col>
                     <Col md={3} className='mb-2 mb-md-0'>
-                        <select id='typeMemberFilter' className='form-select'>
+                        <Form.Select id='typeMemberFilter' size='sm' className='form-select'>
                             <option value="" disabled selected>รูปแบบสมาชิก</option>
-                        </select>
+                        </Form.Select>
                     </Col>
                     <Col md={3} className='mb-2 mb-md-0'>
-                        <input id='searchFilter' className='form-control' type='text' placeholder='ค้นหา' />
+                        <Form inline>
+                            <FormControl
+                                type="text"
+                                placeholder="ค้นหาลูกค้า"
+                                className="mr-sm-2"
+                                size="sm"
+                            />
+                        </Form>
                     </Col>
                 </Row>
                 {/* This is Header */}
@@ -71,7 +77,7 @@ function CustomerList() {
                     customers && customers.map((customer) => (
                         <Row className='mx-3 mb-2' key={customer._id}>
                             <Col md={1} className='text-center'>
-                            {customer.customer_id}
+                                {customer.customer_id}
                             </Col>
                             <Col md={2} className='text-center'>
                                 {customer.full_name}
