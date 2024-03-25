@@ -19,7 +19,7 @@ const UserRoleManagement = () => {
                     บทบาทผู้ใช้งาน
                 </Col>
                 <Col className="d-flex justify-content-end">
-                    <button data-bs-toggle="modal" data-bs-target="#addUserRole" className="add">
+                    {/* <button data-bs-toggle="modal" data-bs-target="#addUserRole" className="add">
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <div className='bg-icon mx-1' style={{ background: '#DEE3F0' }}>
                                 <AddIcon />
@@ -28,7 +28,7 @@ const UserRoleManagement = () => {
                                 เพิ่มข้อมูล
                             </div>
                         </div>
-                    </button>
+                    </button> */}
                 </Col>
             </Row>
             <Row>
@@ -58,12 +58,12 @@ const UserRoleManagement = () => {
                                                 <div>{item.role_name}</div>
                                             </Col>
                                             <Col md={8} className="d-flex justify-content-end gap-2">
-                                                <button onClick={() => { setEmployee_role_id(item.role_id); setEmployee_role_name(item.role_name);}} data-bs-toggle="modal" data-bs-target="#editUserRole" className="edit btn btn-sm">
+                                                {/* <button onClick={() => { setEmployee_role_id(item.role_id); setEmployee_role_name(item.role_name);}} data-bs-toggle="modal" data-bs-target="#editUserRole" className="edit btn btn-sm">
                                                     แก้ไข
-                                                </button>
-                                                <button onClick={() => { setEmployee_role_id(item.role_id); setEmployee_role_name(item.role_name);}} data-bs-toggle="modal" data-bs-target="#deleteUserRole" className="del btn btn-sm">
+                                                </button> */}
+                                                {/* <button onClick={() => { setEmployee_role_id(item.role_id); setEmployee_role_name(item.role_name);}} data-bs-toggle="modal" data-bs-target="#deleteUserRole" className="del btn btn-sm">
                                                     ลบ
-                                                </button>
+                                                </button> */}
                                             </Col>
                                         </Row>
                                     </div>

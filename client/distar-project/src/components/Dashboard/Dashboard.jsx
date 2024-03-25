@@ -9,8 +9,6 @@ import SaleTrendChart from './SaleTrendChart';
 import TotalSaleCard from '../Customer/CustomerCard/TotalSaleCard';
 import AllCustomerCard from '../Customer/CustomerCard/AllCustomerCard';
 import BestSalerCard from './BestSalerCard';
-import axios from 'axios';
-
 
 
 const Dashboard = () => {
