@@ -4,7 +4,7 @@ import DetailCustomer from "../Customer/DetailCustomer";
 import AllCustomer from "../Customer/AllCustomer";
 import Management from "../Management/Management";
 import useFetch from "../hook/useFetch";
-import { createContext, useState} from "react";
+import { createContext, useState } from "react";
 import OrderList from "../Orderlist/OrderList";
 import Employee from "../Employee/Employee";
 import Schedule from "../Schedule/Schedule";
@@ -27,9 +27,13 @@ const Home = () => {
                     <Route path="/customer" element={<Customrt />} />
                     <Route path="/customer/allcustomer" element={<AllCustomer />} />
                     <Route path="/customer/detailcustomer/:customer_id" element={<DetailCustomer />} />
+                    {localStorage.getItem('user_role') === 'แอดมิน' && (
+                        <>
+                            <Route path="/employee" element={<Employee />} />
+                            <Route path="/management/:component" element={<Management />} />
+                        </>
+                    )}
                     <Route path="/orderlist" element={<OrderList />} />
-                    <Route path="/employee" element={<Employee />} />
-                    <Route path="/management/:component" element={<Management />} />
                 </Routes>
             </CustomersContext.Provider>
         </div>

@@ -3,7 +3,7 @@ import usePost from '../hook/usePost'; // Import the custom hook
 import { Form, Button, Col, Row } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import useFetch from '../hook/useFetch';
+
 
 
 
@@ -22,19 +22,38 @@ function AddCustomer() {
   const [customerId, setCustomerId] = useState('');
   const { post } = usePost(); // Use the custom hook
   const navigate = useNavigate();
-  //Call customer_type form database
-  const { data: customer_type } = useFetch(`${import.meta.env.VITE_APP_API_KEY}customer_type`);
-  //Call member_type form database
-  const { data: member_type } = useFetch(`${import.meta.env.VITE_APP_API_KEY}member_type`);
-  //Call member_status form database
-  const { data: member_status } = useFetch(`${import.meta.env.VITE_APP_API_KEY}member_status`);
-  //Call payment_status form database
-  const { data: payment_status } = useFetch(`${import.meta.env.VITE_APP_API_KEY}payment_status`);
-  //Call employee form database
-  // const { data: employee } = useFetch(`${import.meta.env.VITE_APP_API_KEY}employee`);
+
+  const [customer_type , setCustomer_type] = useState([]);
+  const [member_type ,setMember_type] = useState([]);
+  const [member_status , setMember_status] = useState([]);
+  const [payment_status , setPayment_status] = useState([]);
+  const [employee , setEmployee] = useState([]);
 
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const customer_type_res = await fetch (`${import.meta.env.VITE_APP_API_KEY}customer_type`);
+        const customer_type_data = await customer_type_res.json();
+        setCustomer_type(customer_type_data);
+        const member_type_res = await fetch (`${import.meta.env.VITE_APP_API_KEY}member_type`);
+        const member_type_data = await member_type_res.json();
+        setMember_type(member_type_data);
+        const member_status_res = await fetch (`${import.meta.env.VITE_APP_API_KEY}member_status`);
+        const member_status_data = await member_status_res.json();
+        setMember_status(member_status_data);
+        const payment_status_res = await fetch (`${import.meta.env.VITE_APP_API_KEY}payment_status`);
+        const payment_status_data = await payment_status_res.json();
+        setPayment_status(payment_status_data);
+        const employee_res = await fetch (`${import.meta.env.VITE_APP_API_KEY}employees`);
+        const employee_data = await employee_res.json();
+        setEmployee(employee_data);
+       }
+      catch (error) {
+        console.log('Error fetching data:', error);
+      }
+    };
+    fetchData();
     generateUniqueId()
   }, []);
 
@@ -67,8 +86,6 @@ function AddCustomer() {
       }
       attempts++;
     }
-
-    throw new Error('Failed to generate a unique customer ID after multiple attempts');
   };
 
 
@@ -114,6 +131,7 @@ function AddCustomer() {
       };
 
       await post(`${import.meta.env.VITE_APP_API_KEY}customer`, formData);
+      localStorage.setItem('isCreateCustomer', 'true');
 
       // ตรวจสอบเงื่อนไขว่า formData ไม่เป็นค่าว่าง
       if (Object.values(formData).every(value => value !== '')) {
@@ -257,7 +275,13 @@ function AddCustomer() {
                 <Form.Label>ผู้จัดหา</Form.Label>
                 <Form.Select aria-label="Default select example" onChange={(e) => setProvider(e.target.value)} required>
                   <option value=""></option>
-                  <option value={"em-0001"}>คุณ พีระพฤติพิศ</option>
+                  {
+                    employee && employee.map((item) => {
+                      return (
+                        <option key={item.employee_id} value={item.employee_id}>{item.employee_name}</option>
+                      )
+                    })
+                  }
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                   โปรดระบุผู้จัดหา.

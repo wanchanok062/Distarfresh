@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
-import useFetch from '../hook/useFetch'
 import usePost from "../hook/usePost";
 import useDeleteData from "../hook/useDeleteData";
 import useUpdateData from "../hook/useUpdateData";
@@ -9,12 +8,20 @@ import useUpdateData from "../hook/useUpdateData";
 const ModalOrder = (products) => {
     const [validated, setValidated] = useState(false);
     const API_url = import.meta.env.VITE_APP_API_KEY;
-    const { data: category } = useFetch(`${API_url}product_category`);
     const [product_name, setProduct_name] = useState('')
     const [product_category, setProduct_category] = useState('')
     const { post } = usePost(`${API_url}product`);
     const { deleteData } = useDeleteData();
     const { patchData } = useUpdateData();
+    const [category , setCategory ] = useState([]);
+
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_APP_API_KEY}product_category`)
+            .then(res => res.json())
+            .then(data => {
+                setCategory(data);
+            });
+    }, []);
 
     useEffect(() => {
         setProduct_name(products.product_name)
@@ -161,7 +168,7 @@ const ModalOrder = (products) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                            <button onClick={() => deleteData(`${API_url}product/${products.product_id}`)} type="button" className="btn btn-danger" data-bs-dismiss="modal">
+                            <button onClick={() => {deleteData(`${API_url}product/${products.product_id}`);window.location.reload()}} type="button" className="btn btn-danger">
                                 ลบ
                             </button>
                         </div>

@@ -2,14 +2,28 @@ import React from "react";
 import { Card, Col, Row } from "react-bootstrap";
 import ModalStatusOperation from "../ModalStatusOperation";
 import AddIcon from '@mui/icons-material/Add';
-import useFecth from "../../hook/useFetch";
-import { useState } from "react";
+import { useState , useEffect } from "react";
 
 const StatusOperationManagement = () => {
     const API_url = import.meta.env.VITE_APP_API_KEY;
-    const { data: operation } = useFecth(`${API_url}/operation`);
     const [operation_id, setOperation_id] = useState(null);
     const [operation_name, setOperation_name] = useState(null);
+    const [operation , setOperation] = useState(null)
+
+
+    //get memner status data from API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${API_url}/operation`);
+                const data = await response.json();
+                setOperation(data)
+            } catch (error) {
+                console.log('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [API_url]);
 
 
     return (
@@ -59,10 +73,10 @@ const StatusOperationManagement = () => {
                                                 <div>{item.operation_name}</div>
                                             </Col>
                                             <Col md={8} className="d-flex justify-content-end gap-2">
-                                                <button onClick={()=>{setOperation_id(item.operation_id);setOperation_name(item.operation_name)}} data-bs-toggle="modal" data-bs-target="#editOperation" className="edit btn btn-sm">
+                                                <button onClick={() => { setOperation_id(item.operation_id); setOperation_name(item.operation_name) }} data-bs-toggle="modal" data-bs-target="#editOperation" className="edit btn btn-sm">
                                                     แก้ไข
                                                 </button>
-                                                <button onClick={()=>{setOperation_id(item.operation_id);setOperation_name(item.operation_name)}} data-bs-toggle="modal" data-bs-target="#deleteOperation" className="del btn btn-sm">
+                                                <button onClick={() => { setOperation_id(item.operation_id); setOperation_name(item.operation_name) }} data-bs-toggle="modal" data-bs-target="#deleteOperation" className="del btn btn-sm">
                                                     ลบ
                                                 </button>
                                             </Col>

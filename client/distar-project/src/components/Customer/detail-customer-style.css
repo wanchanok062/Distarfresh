@@ -54,6 +54,10 @@
     background: #E2AEAE;
     color: #B84A4A;
 }
+#detail-order {
+    background: #4D639B;
+    color: white;
+}
 .piechart-container {
     width: 400px;
     height: 400px;
@@ -63,4 +67,17 @@
 }
 .card-body {
     height: 350px;
+}
+.order-style{
+    background: #fafbff;
+    margin-bottom: 10px;
+    padding: 1rem;
+    border-radius: 15px;
+}
+.colorwarn{
+    background-color: #ffb700;
+    border-radius: 10px;
+}
+.card-style{
+    height: 100%;
 }

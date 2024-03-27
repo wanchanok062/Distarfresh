@@ -105,7 +105,7 @@ const ModalCustomer = (customer_type) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                            <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={() => { deleteData(`${API_url}customer_type/${customerTypeID}`);}}>
+                            <button type="button" className="btn btn-danger"  onClick={() => { deleteData(`${API_url}customer_type/${customerTypeID}`);window.location.reload()}}>
                                 ลบ
                             </button>
                         </div>

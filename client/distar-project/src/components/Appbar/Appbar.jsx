@@ -20,8 +20,9 @@ const Appbar = () => {
     function handleLogout() {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('user_role');
-        localStorage.removeItem('employee_id');
         localStorage.removeItem('employee_name');
+        localStorage.removeItem('isFirstLogin');
+        localStorage.removeItem('isCreateCustomer');
     }
 
     return (
@@ -89,16 +90,20 @@ const Appbar = () => {
                                     รายการสินค้าทั้งหมด
                                 </MenuItem>
                             </Link>
-                            <Link to="/employee" className="link">
-                                <MenuItem className="menu-item" icon={<SupportAgentOutlinedIcon />}>
-                                    พนักงาน
-                                </MenuItem>
-                            </Link>
-                            <Link to="/management/customer_type" className="link">
-                                <MenuItem className="menu-item" icon={<SettingsOutlinedIcon />}>
-                                    จัดการข้อมูล
-                                </MenuItem>
-                            </Link>
+                            {localStorage.getItem('user_role') === 'แอดมิน' ? (
+                                <div>
+                                    <Link to="/employee" className="link">
+                                        <MenuItem className="menu-item" icon={<SupportAgentOutlinedIcon />}>
+                                            พนักงาน
+                                        </MenuItem>
+                                    </Link>
+                                    <Link to="/management/customer_type" className="link">
+                                        <MenuItem className="menu-item" icon={<SettingsOutlinedIcon />}>
+                                            จัดการข้อมูล
+                                        </MenuItem>
+                                    </Link>
+                                </div>
+                            ) : null}
                             <Link className="link">
                                 <MenuItem onClick={() => handleLogout()} className="menu-item" icon={<LogoutOutlinedIcon />}>
                                     ออกจากระบบ

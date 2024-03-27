@@ -104,7 +104,7 @@ const ModalUserRole = (employee_role) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                            <button onClick={() => deleteData(`${API_url}employee_role/${employee_role.employee_role_id}`)} type="button" className="btn btn-danger"  data-bs-dismiss="modal">
+                            <button onClick={() => {deleteData(`${API_url}employee_role/${employee_role.employee_role_id}`);window.location.reload()}} type="button" className="btn btn-danger">
                                 ลบ
                             </button>
                         </div>

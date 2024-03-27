@@ -12,11 +12,15 @@ import { useEffect, useState } from 'react';
 import DetailCustomerCard from './CustomerCard/DetailCustomerCard'; // from folder CustomerCard.
 import axios from 'axios';
 import OrderTrendChart from './CustomerChart/OrderTrendChart'; // from folder CustomerChart.
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function DetailCustomer() {
     const { customer_id } = useParams();
     const [data, setData] = useState(null);
+    const [order_data, setOrderData] = useState(null);
+
 
     //function convert date to thai date format (DD/MM/YYYY)
     function convertThaiDate(dateString) {
@@ -36,18 +40,62 @@ function DetailCustomer() {
         const thaiDate = `${day}/${month}/${year}`;
         return convertThaiDate(thaiDate);
     }
-
     useEffect(() => {
-        //useFetch data
+        // Use useEffect hook to fetch data
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_API_KEY}customer/${customer_id}`);
-                setData(response.data);
+                // Fetch customer data
+                const customerResponse = await axios.get(`${import.meta.env.VITE_APP_API_KEY}customer/${customer_id}`);
+                setData(customerResponse.data);
+
+                // Fetch order data
+                const orderResponse = await axios.get(`${import.meta.env.VITE_APP_API_KEY}orders_customer/${customer_id}`);
+                setOrderData(orderResponse.data);
+                console.log(orderResponse.data);
+
             } catch (error) {
+                console.error("Error fetching data:", error);
             }
         };
-        fetchData();
-    }, [customer_id]);
+
+        fetchData(); // Call fetchData function when component mounts
+    }, []); // Run useEffect when customer_id changes
+
+
+
+    const notify = () => {
+        return new Promise((resolve, reject) => {
+            toast.success(`เพิ่มลูกค้าสำเร็จ`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                onClose: resolve // Resolve the promise when the notification is closed
+            });
+        });
+    };
+
+
+    useEffect(() => {
+        const isFirstLogin = localStorage.getItem('isCreateCustomer');
+        if (isFirstLogin === null || isFirstLogin === 'true') {
+            notify().then(() => {
+                localStorage.setItem('isCreateCustomer', 'false');
+            }).catch(error => {
+                console.error('Error displaying notification:', error);
+            });
+        }
+    }, []);
+
+
+    //state for store data order
+    const [order_id, setOrder_id] = useState('')
+
+
 
     return (
         <Container>
@@ -96,65 +144,65 @@ function DetailCustomer() {
                         <Card.Body id='card-body' className="m-4 d-flex justify-content-center align-content-center">
                             {data && data.map((customer) => (
                                 <Row key={customer.customer_id}>
-                                    <Col md={4} className='text-right'>
+                                    <Col md={5} className='text-right'>
                                         รหัสลูกค้า
                                     </Col>
-                                    <Col md={9}>
+                                    <Col md={6}>
                                         <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}> {customer.customer_id}</span>
                                     </Col>
-                                    <Col md={3} className='text-right'>
+                                    <Col md={5} className='text-right'>
                                         วันที่สมัคร
                                     </Col>
-                                    <Col md={9}>
+                                    <Col md={6}>
                                         {convertToThaiDate(customer.start_date)}
                                     </Col>
-                                    <Col md={3} className='text-right'>
+                                    <Col md={5} className='text-right'>
                                         วันที่สิ้นสุด
                                     </Col>
-                                    <Col md={9}>
+                                    <Col md={6}>
                                         {convertToThaiDate(customer.exp_date)}
                                     </Col>
 
-                                    <Col md={3} className='text-right'>
+                                    <Col md={5} className='text-right'>
                                         ชื่อ-สกุล
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         {customer.full_name}
                                     </Col>
-                                    <Col md={4} className='text-right'>
+                                    <Col md={5} className='text-right'>
                                         เบอร์โทร
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         {customer.tel}
                                     </Col>
-                                    <Col md={4} className='text-right'>
+                                    <Col md={5} className='text-right'>
                                         ที่อยู่
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         {customer.address}
                                     </Col>
-                                    <Col md={4} className='text-right'>
+                                    <Col md={5} className='text-right'>
                                         ประเภทลูกค้า
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         {customer.customer_type_name}
                                     </Col>
-                                    <Col md={4} className='text-right'>
+                                    <Col md={5} className='text-right'>
                                         รูปแบบ
                                     </Col>
-                                    <Col md={9}>
+                                    <Col md={6}>
                                         {customer.member_type_name}
                                     </Col>
-                                    <Col md={4} className='text-right'>
+                                    <Col md={5} className='text-right'>
                                         สถานะสมาชิก
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         {customer.member_status_name}
                                     </Col>
-                                    <Col md={4} className='text-right'>
+                                    <Col md={5} className='text-right'>
                                         การชำระเงิน
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={6}>
                                         {customer.paymentstatus_name}
                                     </Col>
                                 </Row>
@@ -163,7 +211,7 @@ function DetailCustomer() {
                     </Card>
                 </Col>
                 {/* Order Trend Card */}
-                <Col md={7} className='mt-3'>
+                <Col md={7} className='mt-3 '>
                     <Card className='card-piechart'>
                         <Row className='m-3'>
                             <Col md={12} className='d-flex justify-content-center mb-3'>
@@ -181,20 +229,20 @@ function DetailCustomer() {
             <Card className='card-order mt-3'>
                 <Card.Title className='mx-3 my-3'>คำสั่งซื้อ</Card.Title>
                 <Row>
-                    <Col className='d-flex justify-content-end mx-3'>
+                    <Col className=' d-flex justify-content-end mx-3'>
                         <button id='add-order' className='btn btn-sm'
                             data-bs-toggle="modal" data-bs-target="#addOrder">
                             เพิ่มคำสั่งซื้อ
                         </button>
                     </Col>
                 </Row>
-                <Card.Body className='mx-3'>
+                <Card.Body className='mx-3 card-style'>
                     <Row>
-                        <Col className='text-center' md={1}>
-                            ลำดับ
+                        <Col className='text-center' md={2}>
+                            ID
                         </Col>
                         <Col className='text-center' md={2}>
-                            รายการ
+                            รายการผัก
                         </Col>
                         <Col className='text-center' md={2}>
                             รอบคำสั่งซื้อ
@@ -212,54 +260,64 @@ function DetailCustomer() {
                     <hr />
                     {/* Data */}
                     <Row>
-                        <Col md={1}>
-                            <div className='text-center'>
-                                1
-                            </div>
-                        </Col>
-                        <Col className='text-center' md={2}>
-                            <Col>
-                                ผักชนิดที่1 : 5 หน่วย
-                            </Col>
-                            <Col>
-                                ผักชนิดที่2 : 5 หน่วย
-                            </Col>
-                        </Col>
-                        <Col md={2}>
-                            <div className='text-center'>
-                                1
-                            </div>
-                        </Col>
-                        <Col md={2}>
-                            <div className='text-center'>
-                                1/1/2024
-                            </div>
-                        </Col>
-                        <Col md={2}>
-                            <div className='text-center'>
-                                จัดส่งแล้ว
-                            </div>
-                        </Col>
-                        <Col md={3} className='d-flex justify-content-end'>
-                            <Col md={3}>
-                                <button id='edit-order' className='btn btn-sm'
-                                    data-bs-toggle="modal" data-bs-target="#editOrder">
-                                    แก้ไข
-                                </button>
-                            </Col>
-                            <Col md={2}>
-                                <button id='del-order' className='btn btn-sm'
-                                    data-bs-toggle="modal" data-bs-target="#deleteOrder"
-                                >ลบ</button>
-                            </Col>
-                        </Col>
+                        {
+                            order_data && order_data.map((order) => (
+                                <Row key={order.order_id} className='order-style'>
+                                    <Col md={2}>
+                                        <div className='text-center'>
+                                            {order.order_id}
+                                        </div>
+                                    </Col>
+                                    <Col md={2}>
+                                        <div className='text-center'>
+                                            <button id='detail-order' className='btn mx-2 btn-sm '
+                                                data-bs-toggle="modal" data-bs-target="#editOrder">
+                                                ดูรายละเอียด
+                                            </button>
+                                        </div>
+                                    </Col>
+                                    <Col md={2}>
+                                        <div className='text-center'>
+                                            {order.cycle_order}
+                                        </div>
+                                    </Col>
+                                    <Col md={2}>
+                                        <div className={`text-center ${order.operation_name === 'เลื่อนจัดส่ง' ? 'colorwarn' : ''}`}>
+                                            {convertToThaiDate(order.delivery_date)}
+                                        </div>
+                                    </Col>
+                                    <Col md={2}>
+                                        <div className='text-center'>
+                                            {order.operation_name}
+                                        </div>
+                                    </Col>
+                                    <Col md={2} className='d-flex justify-content-end'>
+                                        {/* <Col md={1}> */}
+                                        <button id='edit-order' className='btn mx-2 btn-sm '
+                                            data-bs-toggle="modal" data-bs-target="#editOrder" onClick={() => setOrder_id(order.order_id)}>
+                                            แก้ไข
+                                        </button>
+                                        {/* </Col> */}
+                                        {/* <Col md={1}> */}
+                                        <button id='del-order' className='btn btn-sm'
+                                            data-bs-toggle="modal" data-bs-target="#deleteOrder" onClick={() => setOrder_id(order.order_id)}
+                                        >ลบ</button>
+                                        {/* </Col> */}
+                                    </Col>
+                                    {/* Modal Order */}
+                                    {/* <EditOrder data={order} /> */}
+
+                                </Row>
+                            ))
+                        }
                         {/* Modal Order */}
-                        <AddOrder />
-                        <EditOrder />
-                        <DeleteOrder />
+                        <AddOrder customer_id={customer_id} />
+                        <EditOrder order_id={order_id} />
+                        <DeleteOrder delete_id={order_id} />
                     </Row>
                 </Card.Body>
             </Card>
+            <ToastContainer />
         </Container>
     )
 }

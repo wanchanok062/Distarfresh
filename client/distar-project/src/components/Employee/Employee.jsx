@@ -1,13 +1,14 @@
 import { SupportAgentOutlined } from "@mui/icons-material";
 import { Col, Container, Row, Card, Form, FormControl } from "react-bootstrap";
-import { useState } from "react";
+import { useState,useEffect} from "react";
 import './employee-style.css';
 import ModalEmployee from "./ModalEmployee";
 import useFetch from '../hook/useFetch'
+
 const Employee = () => {
     //bese API entpoint
     const API_url = import.meta.env.VITE_APP_API_KEY;
-    const { data: employees } = useFetch(API_url + '/employees');
+    const [employees, setEmployees] = useState([]);
 
     const [employee_id, setEmployId] = useState('');
     const [employee_name, setEmployName] = useState('');
@@ -15,6 +16,22 @@ const Employee = () => {
     const [role_name, setRole_name] = useState('');
     const [role_id, setRole_id] = useState('');
     const [department_id, setDepartmentId] = useState('');
+
+    useEffect(()=>{
+        const fetchEmployee = async() =>{
+            try{
+                const response = await fetch(`${API_url}employees`);
+                const data = await response.json();
+                setEmployees(data);
+            }
+            catch(err){
+                console.log(err);
+            }
+        }
+        
+        fetchEmployee();
+    },[])
+
 
 
     // send data to modal

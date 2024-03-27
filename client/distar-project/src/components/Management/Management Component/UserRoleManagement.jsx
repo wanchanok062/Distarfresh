@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Col, Row } from "react-bootstrap";
 import ModalUserRole from "../ModalUserRole";
-import AddIcon from '@mui/icons-material/Add';
 import useFecth from "../../hook/useFetch";
 import { useState } from "react";
 
 const UserRoleManagement = () => {
     const API_url = import.meta.env.VITE_APP_API_KEY;
-    const { data: employee_role } = useFecth(`${API_url}/employee_role`);
-    const [employee_role_id, setEmployee_role_id] = useState(null);
-    const [employee_role_name, setEmployee_role_name] = useState(null);
+    const [employee_role , setEmployee_role] = useState(null)
+
+    //get memner status data from API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${API_url}/employee_role`);
+                const data = await response.json();
+                setEmployee_role(data) 
+            } catch (error) {
+                console.log('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [API_url]);
 
     return (
         // บทบาทผู้ใช้งาน
@@ -74,7 +85,7 @@ const UserRoleManagement = () => {
                 </Col>
             </Row>
             {/* Modal */}
-            <ModalUserRole employee_role_id={employee_role_id} employee_role_name={employee_role_name} />
+            <ModalUserRole/>
         </div>
     )
 }

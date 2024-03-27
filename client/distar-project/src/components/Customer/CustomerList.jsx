@@ -1,14 +1,24 @@
 import './customer-list-style.css';
 import { Card, Col, Row, Form, FormControl } from 'react-bootstrap'; // Import Button from react-bootstrap
 import { Link } from 'react-router-dom';
-import useFetch from '../hook/useFetch';
+import { useEffect ,useState } from 'react';
 
 
 
 function CustomerList() {
 
 
-    const { data: customers } = useFetch(`${import.meta.env.VITE_APP_API_KEY}customers`);
+    
+    const [customers , setCustomers] = useState([]);
+
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_APP_API_KEY}customers`)
+            .then(res => res.json())
+            .then(data => {
+                setCustomers(data);
+            });
+    }, []);
+
     return (
         <div>
             <div>

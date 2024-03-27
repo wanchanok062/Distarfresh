@@ -16,7 +16,7 @@ const Header = () => {
       {/* headerbar right */}
       <Box display="flex">
         <Card id="card" className="p-2">
-          <div id="card-text">Admin</div>
+          <div id="card-text">{localStorage.getItem('user_role')}</div>
         </Card>
       </Box>
     </Box>

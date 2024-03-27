@@ -3,16 +3,31 @@ import { Card, Col, Row } from "react-bootstrap";
 import ModalDepartment from "../ModalDepartment";
 import AddIcon from '@mui/icons-material/Add';
 import useFecth from "../../hook/useFetch";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 const DepartmentManagement = () => {
     //bese API entpoint
     const API_url = import.meta.env.VITE_APP_API_KEY;
-    const { data: department } = useFecth(`${API_url}/department`);
-
+    
     //set state for department data
     const [department_id, setDepartment_id] = useState(null);
     const [department_name, setDepartment_name] = useState(null);
+    const [department , setDepartment] = useState(null)
+
+    //get department data from API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${API_url}/department`);
+                const data = await response.json();
+                setDepartment(data)
+            } catch (error) {
+                console.log('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [API_url]);
+
 
 
     return (

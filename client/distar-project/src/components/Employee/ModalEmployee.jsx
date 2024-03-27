@@ -10,11 +10,30 @@ const ModalEmployee = (employee) => {
 
     //bese API entpoint
     const API_url = import.meta.env.VITE_APP_API_KEY;
-    const { data: department } = useFecth(API_url + '/department');
-    const { data: employee_role } = useFecth(API_url + '/employee_role');
+
+    const [department, setDepartment] = useState([])
+    const [employee_role, setEmployeeRole] = useState([])
 
     //define patch
     const { patchData } = useUpdateData();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const responseDepartMent = await fetch(`${API_url}department`);
+                const department = await responseDepartMent.json();
+                setDepartment(department);
+    
+                const responseEmployeeRole = await fetch(`${API_url}employee_role`);
+                const employeeRoleData = await responseEmployeeRole.json();
+                setEmployeeRole(employeeRoleData);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+    
+        fetchData();
+    }, []);
 
     useEffect(() => {
         setEmployee_name(employee.employee_name)
@@ -216,7 +235,7 @@ const ModalEmployee = (employee) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                            <button onClick={() => deleteData(`${API_url}employee/${employee.employee_id}`)} type="button" className="btn btn-danger" data-bs-dismiss="modal">
+                            <button onClick={() => {deleteData(`${API_url}employee/${employee.employee_id}`); window.location.reload()}} type="button" className="btn btn-danger">
                                 ลบ
                             </button>
                         </div>

@@ -2,14 +2,28 @@ import React from "react";
 import { Card, Col, Row } from "react-bootstrap";
 import ModalPayment from "../ModalPayment";
 import AddIcon from '@mui/icons-material/Add';
-import { useState } from "react";
-import useFetch from "../../hook/useFetch";
+import { useState,useEffect } from "react";
+
 
 const PaymentManagement = () => {
     const API_url = import.meta.env.VITE_APP_API_KEY;
-    const { data: payment_status } = useFetch(`${API_url}/payment_status`);
     const [paymentstatus_id, setPaymentstatus_id] = useState(null);
     const [paymentstatus_name, setPaymentstatus_name] = useState(null);
+    const [payment_status , setPayment_status] = useState(null)
+
+    //get payment status data from API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${API_url}/payment_status`);
+                const data = await response.json();
+                setPayment_status(data)
+            } catch (error) {
+                console.log('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [API_url]);
     return (
         // การชำระเงิน
         <div>
@@ -45,7 +59,7 @@ const PaymentManagement = () => {
                             </Col>
                         </Row>
                         <hr className="mx-4" />
-                        { payment_status && payment_status.map((item, index) => {
+                        {payment_status && payment_status.map((item, index) => {
                             return (
                                 <div key={index}>
                                     <Row className="mx-3 mb-3">
@@ -66,12 +80,12 @@ const PaymentManagement = () => {
                                     </Row>
                                 </div>
                             )
-                        }) }
+                        })}
                     </Card>
                 </Col>
             </Row>
             {/* Modal */}
-            <ModalPayment paymentstatus_id={paymentstatus_id} paymentstatus_name={paymentstatus_name}  />
+            <ModalPayment paymentstatus_id={paymentstatus_id} paymentstatus_name={paymentstatus_name} />
         </div>
     )
 }

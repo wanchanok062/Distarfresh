@@ -1,6 +1,10 @@
+import useDeleteData from "../hook/useDeleteData";
 
-
-function DeleteOrder() {
+function DeleteOrder(order_id) {
+    //base API entpoint
+    const API_url = import.meta.env.VITE_APP_API_KEY;
+    //import useDeleteData
+    const { deleteData } = useDeleteData();
 
     return (
         <div className="modal fade" id="deleteOrder" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -11,11 +15,11 @@ function DeleteOrder() {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        เมื่อคุณทำการลบข้อมูลผู้ใช้งาน ข้อมูลทั้งหมดจะหายไปจากระบบทันทีและไม่สามารถกู้คืนได้กด "ลบ" หากคุณยืนยันลบข้อมูลนี้
+                        คุณต้องการลบรายการนี้หรือไม่?
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-none" data-bs-dismiss="modal" >ยกเลิก</button>
-                        <button type="button" className="btn btn-danger" > ลบ</button>
+                        <button type="button" onClick={()=> {deleteData(`${API_url}order/${order_id.delete_id}`);window.location.reload()}} className="btn btn-danger" > ลบ</button>
                     </div>
                 </div>
             </div>

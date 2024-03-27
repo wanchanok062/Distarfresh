@@ -14,6 +14,8 @@ const productsRouter = require('./products');
 const employeeRouter = require('./employee');
 const cookieParser = require('cookie-parser');
 const authen = require('./authen'); 
+const orderRouter = require('./order');
+const orderDetailsRouter = require('./order_details');
 
 // Create an Express application
 const app = express();
@@ -43,6 +45,8 @@ app.use('/api/v1.0', departmentRouter);
 app.use('/api/v1.0', productsRouter);
 app.use('/api/v1.0', employeeRouter);
 app.use('/api/v1.0', authen);
+app.use('/api/v1.0', orderRouter);
+app.use('/api/v1.0', orderDetailsRouter);
 
 
 // Export the Express application

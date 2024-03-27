@@ -2,14 +2,28 @@ import React from "react";
 import { Card, Col, Row } from "react-bootstrap";
 import ModalMember from "../ModalMember";
 import AddIcon from '@mui/icons-material/Add';
-import { useState } from "react";
-import useFetch from "../../hook/useFetch";
+import { useState,useEffect } from "react";
 
 const MemberManagement = () => {
     const API_url = import.meta.env.VITE_APP_API_KEY;
-    const { data: member_type } = useFetch(`${API_url}/member_type`);
     const [member_type_id, setMember_type_id] = useState(null);
     const [member_type_name, setMember_type_name] = useState(null);
+    const [member_type , setMember_type] = useState(null)
+
+    
+    //get member type data from API 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${API_url}/member_type`);
+                const data = await response.json();
+                setMember_type(data)
+            } catch (error) {
+                console.log('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [API_url]);
 
     return (
         // รูปแบบสมาชิก

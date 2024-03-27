@@ -1,11 +1,13 @@
 
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Card, Row, Col, Form, Button } from 'react-bootstrap';
 import logo from '../Appbar/logo.png';
 import './login-style.css';
 import axios from 'axios';
 //import use navgate
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     //use navigate
@@ -17,7 +19,16 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
- 
+    const notify = () => toast.error('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
 
     const handleSubmit = async (event) => {
         const form = event.currentTarget;
@@ -27,20 +38,20 @@ const Login = () => {
         }
         event.preventDefault();
         try {
-            const response = await axios.post(API_url+'login', { username, password });
+            const response = await axios.post(API_url + 'login', { username, password });
             const accessToken = response.data.accessToken;
             const user_role = response.data.role_name;
-            const employee_id  = response.data.employee_id;
-            const employee_name  = response.data.employee_name;
+            const employee_name = response.data.employee_name;
             //set token to local storage
             localStorage.setItem('accessToken', accessToken);
             localStorage.setItem('user_role', user_role);
-            localStorage.setItem('employee_id', employee_id);
             localStorage.setItem('employee_name', employee_name);
+            localStorage.setItem('isFirstLogin', 'true');
 
         } catch (error) {
             // console.error('Login failed:', error);
-            alert('Login failed. Please try again.')
+            notify();
+
         }
         navigate('/');
         // setValidated(true);
@@ -89,6 +100,7 @@ const Login = () => {
                                         <Button onClick={handleSubmit} variant="primary" className='w-100' type="submit">
                                             Login
                                         </Button>
+
                                     </Form>
                                 </div>
                             </Col>
@@ -96,6 +108,7 @@ const Login = () => {
                     </Card>
                 </Col>
             </Row>
+            <ToastContainer />
         </Container>
     )
 }

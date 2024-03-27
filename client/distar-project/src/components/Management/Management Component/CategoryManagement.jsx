@@ -2,13 +2,26 @@ import React from "react";
 import { Card, Col, Row } from "react-bootstrap";
 import ModalCategory from "../ModalCategory";
 import AddIcon from '@mui/icons-material/Add';
-import useFecth from "../../hook/useFetch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 const CategoryManagement = () => {
     const API_url = import.meta.env.VITE_APP_API_KEY;
-    const { data: product_category } = useFecth(`${API_url}/product_category`);
+    const [product_category, setProduct_category] = useState(null);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${API_url}/product_category`);
+                const data = await response.json();
+                setProduct_category(data);
+            } catch (error) {
+                console.log('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [API_url]);
 
     const [product_category_id, setProduct_category_id] = useState(null);
     const [product_category_name, setProduct_category_name] = useState(null);
@@ -60,10 +73,10 @@ const CategoryManagement = () => {
                                                 <div>{item.product_category_name}</div>
                                             </Col>
                                             <Col md={8} className="d-flex justify-content-end gap-2">
-                                                <button onClick={()=>{setProduct_category_id(item.product_category_id);setProduct_category_name(item.product_category_name)}} data-bs-toggle="modal" data-bs-target="#editCategory" className="edit btn btn-sm">
+                                                <button onClick={() => { setProduct_category_id(item.product_category_id); setProduct_category_name(item.product_category_name) }} data-bs-toggle="modal" data-bs-target="#editCategory" className="edit btn btn-sm">
                                                     แก้ไข
                                                 </button>
-                                                <button onClick={()=>{setProduct_category_id(item.product_category_id);setProduct_category_name(item.product_category_name)}} data-bs-toggle="modal" data-bs-target="#deleteCategory" className="del btn btn-sm">
+                                                <button onClick={() => { setProduct_category_id(item.product_category_id); setProduct_category_name(item.product_category_name) }} data-bs-toggle="modal" data-bs-target="#deleteCategory" className="del btn btn-sm">
                                                     ลบ
                                                 </button>
                                             </Col>

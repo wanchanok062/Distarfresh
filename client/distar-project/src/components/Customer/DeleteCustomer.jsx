@@ -9,6 +9,7 @@ function DeleteCustomer({delete_id}) {
      
         setIsLoading(true); // Set loading state to true when deletion starts
         try {
+            console.log(delete_id);
             // Make a DELETE request to the server to delete the order
             const response = await axios.delete(`${import.meta.env.VITE_APP_API_KEY}customer/${delete_id}`);
             // Handle success response

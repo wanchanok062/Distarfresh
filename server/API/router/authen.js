@@ -13,14 +13,18 @@ function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   if (token == null) return res.sendStatus(401);
-
+  // Decode the token to get the payload
+  const decodedToken = jwt.decode(token);
+  // Check if the token is expired
+  if (decodedToken.exp < Date.now() / 1000) {
+    return res.status(401).send("Token expired");
+  }
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
     next();
   });
 }
-
 // Login endpoint
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
@@ -65,12 +69,13 @@ router.post("/login", (req, res) => {
             .json({ message: "รหัสผ่านหรือชื่อผู้ใช้ไม่ถูกต้อง" });
         }
 
-        const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+        const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+          expiresIn: "24h",
+        });
         res.json({
           accessToken: accessToken,
-          employee_id: user.employee_id,
           role_name: user.role_name,
-          employee_name : user.employee_name
+          employee_name: user.employee_name,
         });
       });
     })

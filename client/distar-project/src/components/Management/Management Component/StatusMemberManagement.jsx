@@ -2,15 +2,29 @@ import React from "react";
 import { Card, Col, Row } from "react-bootstrap";
 import ModalStatusMember from "../ModalStatusMember";
 import AddIcon from '@mui/icons-material/Add';
-import useFetch from "../../hook/useFetch";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 const StatusMemberManagement = () => {
     const API_url = import.meta.env.VITE_APP_API_KEY;
-    const { data: memberStatus } = useFetch(`${API_url}member_status`);
     const [member_status_id, setMember_status_id] = useState(null);
     const [member_status_name, setMember_status_name] = useState(null);
+    const [memberStatus , setMemberStatus] = useState(null)
     // console.log(memberStatus);
+    
+    //get memner status data from API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${API_url}/member_status`);
+                const data = await response.json();
+                setMemberStatus(data)
+            } catch (error) {
+                console.log('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [API_url]);
+
     return (
         // สถานะสมาชิก
         <div>
@@ -52,16 +66,16 @@ const StatusMemberManagement = () => {
                                     <div key={index}>
                                         <Row className="mx-3 mb-3">
                                             <Col className="text-center" md={2}>
-                                                <div>{index+1}</div>
+                                                <div>{index + 1}</div>
                                             </Col>
                                             <Col md={3} className="text-left">
                                                 <div>{item.member_status_name}</div>
                                             </Col>
                                             <Col md={7} className="d-flex justify-content-end gap-2">
-                                                <button data-bs-toggle="modal" data-bs-target="#editStatusMember" className="edit btn btn-sm" onClick={()=>{setMember_status_id(item.member_status_id);setMember_status_name(item.member_status_name)}}>
+                                                <button data-bs-toggle="modal" data-bs-target="#editStatusMember" className="edit btn btn-sm" onClick={() => { setMember_status_id(item.member_status_id); setMember_status_name(item.member_status_name) }}>
                                                     แก้ไข
                                                 </button>
-                                                <button data-bs-toggle="modal" data-bs-target="#deleteStatusMember" className="del btn btn-sm" onClick={()=>{setMember_status_id(item.member_status_id);setMember_status_name(item.member_status_name)}}>
+                                                <button data-bs-toggle="modal" data-bs-target="#deleteStatusMember" className="del btn btn-sm" onClick={() => { setMember_status_id(item.member_status_id); setMember_status_name(item.member_status_name) }}>
                                                     ลบ
                                                 </button>
                                             </Col>
@@ -74,7 +88,7 @@ const StatusMemberManagement = () => {
                 </Col>
             </Row>
             {/* Modal */}
-            <ModalStatusMember member_status_id={member_status_id} member_status_name={member_status_name}  />
+            <ModalStatusMember member_status_id={member_status_id} member_status_name={member_status_name} />
         </div>
     )
 }

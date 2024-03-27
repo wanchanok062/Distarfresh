@@ -2,15 +2,22 @@ import { Col, Container, Row, Card, Form, FormControl, FormSelect } from "react-
 import AddIcon from '@mui/icons-material/Add';
 import './order-list-style.css';
 import ModalOrder from "./ModalOrder";
-import useFecth from "../hook/useFetch";
-import { useState } from "react";
+import { useState ,useEffect } from "react";
 
 const OrderList = () => {
     const API_url = import.meta.env.VITE_APP_API_KEY;
-    const { data: products } = useFecth(`${API_url}products`);
     const [product_id, setProduct_id] = useState(null)
     const [product_name, setProduct_name] = useState(null)
     const [product_category, setProduct_category] = useState(null)
+    const [products , setProducts] = useState([]);
+
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_APP_API_KEY}products`)
+            .then(res => res.json())
+            .then(data => {
+                setProducts(data);
+            });
+    }, []);
 
 
     return (

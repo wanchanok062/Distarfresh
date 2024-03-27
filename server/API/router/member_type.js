@@ -5,12 +5,7 @@ const pool = require("../db/db");
 // Create a router
 const router = express.Router();
 
-function generateUniqueID(name) {
-  // ใช้ Regular Expression เพื่อแยกตัวเลขจากข้อความ
-  const number = name.match(/\d+/)[0]; // หาตัวเลขทั้งหมดในข้อความและเลือกตัวเลขแรก
-  const id = `mt-${number}`; // สร้าง ID โดยใช้เลขที่ได้จากข้อความ
-  return id;
-}
+const   generateUniqueID = require("./generate_id");
 
 //flind all member_type
 router.get("/member_type", async (req, res) => {
@@ -37,7 +32,7 @@ router.get("/member_type/:id", async (req, res) => {
 //add new member type
 router.post("/member_type", async (req, res) => {
   try {
-    const id = await generateUniqueID(req.body.member_type_name);
+    const id = await generateUniqueID("ms-", "member_status_id", "member_status");
     const query = `INSERT INTO member_type (member_type_id, member_type_name) VALUES ($1, $2) RETURNING *`;
     const { rows } = await pool.query(query, [id, req.body.member_type_name]);
     res.status(201).json(rows);

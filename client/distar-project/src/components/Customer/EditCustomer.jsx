@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import useUpdateData from '../hook/useUpdateData';
-import useFetch from "../hook/useFetch";
+
 function EditCustomer(data) {
   const { customer_id } = useParams();
   const { patchData } = useUpdateData();
@@ -18,14 +18,36 @@ function EditCustomer(data) {
   const [provider, setProvider] = useState('');
   // const [customerId, setCustomerId] = useState('');
   const [validated, setValidated] = useState(false);
-  //Call customer_type form database
-  const { data: customer_type } = useFetch(`${import.meta.env.VITE_APP_API_KEY}customer_type`);
-  //Call member_type form database
-  const { data: member_type } = useFetch(`${import.meta.env.VITE_APP_API_KEY}member_type`);
-  //Call member_status form database
-  const { data: member_status } = useFetch(`${import.meta.env.VITE_APP_API_KEY}member_status`);
-  //Call payment_status form database
-  const { data: payment_status } = useFetch(`${import.meta.env.VITE_APP_API_KEY}payment_status`);
+
+
+  const [customer_type, setCustomer_type] = useState([]);
+  const [member_type, setMember_type] = useState([]);
+  const [member_status, setMember_status] = useState([]);
+  const [payment_status, setPayment_status] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const customer_type_res = await fetch(`${import.meta.env.VITE_APP_API_KEY}customer_type`);
+        const customer_type_data = await customer_type_res.json();
+        setCustomer_type(customer_type_data);
+        const member_type_res = await fetch(`${import.meta.env.VITE_APP_API_KEY}member_type`);
+        const member_type_data = await member_type_res.json();
+        setMember_type(member_type_data);
+        const member_status_res = await fetch(`${import.meta.env.VITE_APP_API_KEY}member_status`);
+        const member_status_data = await member_status_res.json();
+        setMember_status(member_status_data);
+        const payment_status_res = await fetch(`${import.meta.env.VITE_APP_API_KEY}payment_status`);
+        const payment_status_data = await payment_status_res.json();
+        setPayment_status(payment_status_data);
+      }
+      catch (error) {
+        console.log('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
 
 
 
@@ -129,7 +151,7 @@ function EditCustomer(data) {
                 {/* ประเภทลูกค้า */}
                 <Form.Group className="mb-3" >
                   <Form.Label>ประเภทลูกค้า<span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.customer_type_name.split('T')[0]}</span></Form.Label>
-                  <Form.Select v  aria-label="Default select example" value={customerType} onChange={(e) => setCustomerType(e.target.value)} required >
+                  <Form.Select v aria-label="Default select example" value={customerType} onChange={(e) => setCustomerType(e.target.value)} required >
                     {
                       customer_type && customer_type.map((customer) => (
                         <option value={customer.customer_type_id} key={customer.customer_type_id}>{customer.customer_type_name}</option>

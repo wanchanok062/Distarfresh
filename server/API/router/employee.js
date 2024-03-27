@@ -86,7 +86,6 @@ router.get("/employee/:id", async (req, res) => {
   }
 });
 
-
 // POST route to add a new employee
 router.post("/employee", async (req, res) => {
   try {
@@ -96,7 +95,15 @@ router.post("/employee", async (req, res) => {
     // Generate the employee_id
     const defaultId = await generateUniqueID("em-", "employee_id", "employee");
     const employee_id = defaultId;
-    const username = `${defaultId}@distar.com`
+    let username = null; // Initialize username as null
+
+    // Check if the role_id is admin
+    if (role_id === "admin") {
+      // assuming 'admin' is a string representing admin role
+      username = `${defaultId}@admin.com`;
+    } else {
+      username = `${defaultId}@distar.com`;
+    }
 
     // Generate a password for the employee (concatenating employee_id and department_id)
     const password = `${employee_id}-${department_id}`;

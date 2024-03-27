@@ -20,6 +20,7 @@ const ModalMember = (member_type) => {
         setMember_type_name(member_type.member_type_name)
     } ,[member_type.member_type_name])
 
+
     const handleEdit = (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
@@ -102,7 +103,7 @@ const ModalMember = (member_type) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                            <button onClick={()=>deleteData(`${API_url}member_type/${member_type.member_type_id}`)}data-bs-dismiss="modal" type="button" className="btn btn-danger">
+                            <button onClick={()=>{deleteData(`${API_url}member_type/${member_type.member_type_id}`);window.location.reload()}}  className="btn btn-danger" type="button">
                                 ลบ
                             </button>
                         </div>

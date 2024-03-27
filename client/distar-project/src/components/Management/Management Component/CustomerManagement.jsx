@@ -2,14 +2,27 @@ import React, { useEffect, useState } from "react";
 import { Col, Row, Card } from "react-bootstrap";
 import AddIcon from '@mui/icons-material/Add';
 import ModalCustomer from "../ModalCustomer";
-import useFetch from "../../hook/useFetch";
+
 
 
 const CustomerManagement = () => {
     const API_url = import.meta.env.VITE_APP_API_KEY;
-    const { data: customer_type } = useFetch(`${API_url}/customer_type`);
+    const [customer_type , setcustomer_type] = useState(null);
     const [customer_type_id, setcustomer_type_id] = useState(null);
     const [customer_type_name, setcustomer_type_name] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${API_url}/customer_type`);
+                const data = await response.json();
+                setcustomer_type(data)
+            } catch (error) {
+                console.log('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [API_url]);
 
 
     return (

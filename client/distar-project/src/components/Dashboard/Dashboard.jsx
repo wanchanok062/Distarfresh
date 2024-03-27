@@ -9,9 +9,40 @@ import SaleTrendChart from './SaleTrendChart';
 import TotalSaleCard from '../Customer/CustomerCard/TotalSaleCard';
 import AllCustomerCard from '../Customer/CustomerCard/AllCustomerCard';
 import BestSalerCard from './BestSalerCard';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Dashboard = () => {
+
+    const notify = () => {
+        return new Promise((resolve, reject) => {
+            toast.success(`ยินดีต้อนรับ ${localStorage.getItem('employee_name')}`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                onClose: resolve // Resolve the promise when the notification is closed
+            });
+        });
+    };
+
+    useEffect(() => {
+        const isFirstLogin = localStorage.getItem('isFirstLogin');
+        if (isFirstLogin === null || isFirstLogin === 'true') {
+            notify().then(() => {
+                localStorage.setItem('isFirstLogin', 'false');
+            }).catch(error => {
+                console.error('Error displaying notification:', error);
+            });
+        }
+    }, []);
+
+
     return (
         <Container>
             <Row className='mb-3'>
@@ -155,6 +186,7 @@ const Dashboard = () => {
                     </Card>
                 </Col>
             </Row>
+            <ToastContainer />
         </Container>
     )
 }
