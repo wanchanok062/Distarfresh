@@ -1,8 +1,33 @@
 import { SupportAgentOutlined } from "@mui/icons-material";
 import { Col, Container, Row, Card, Form, FormControl } from "react-bootstrap";
+import { useState } from "react";
 import './employee-style.css';
 import ModalEmployee from "./ModalEmployee";
+import useFetch from '../hook/useFetch'
 const Employee = () => {
+    //bese API entpoint
+    const API_url = import.meta.env.VITE_APP_API_KEY;
+    const { data: employees } = useFetch(API_url + '/employees');
+
+    const [employee_id, setEmployId] = useState('');
+    const [employee_name, setEmployName] = useState('');
+    const [department_name, setDepartmentName] = useState('');
+    const [role_name, setRole_name] = useState('');
+    const [role_id, setRole_id] = useState('');
+    const [department_id, setDepartmentId] = useState('');
+
+
+    // send data to modal
+    const sendDataModal = (employee_id,employee_name,department_name,role_name,role_id,department_id) => { 
+        setEmployId(employee_id); 
+        setEmployName(employee_name); 
+        setDepartmentName(department_name); 
+        setRole_name(role_name);
+        setRole_id(role_id);
+        setDepartmentId(department_id);
+    }
+
+
     return (
         <Container>
             <Row className="mb-3">
@@ -63,31 +88,35 @@ const Employee = () => {
                             </Col>
                         </Row>
                         <hr className="mx-4" />
-                        <Row className="mx-3 mb-3">
-                            <Col md={1}>
-                                1
-                            </Col>
-                            <Col md={2}>
-                                แอดมิน
-                            </Col>
-                            <Col md={2}>
-                                ฝ่ายขาย
-                            </Col>
-                            <Col md={2}>
-                                แอดมิน
-                            </Col>
-                            <Col md={2}>
-                                Admin
-                            </Col>
-                            <Col md={2}>
-                                Adminja
-                            </Col>
-                            <Col md={1} className="d-flex justify-content-end gap-2">
-                                <button data-bs-toggle="modal" data-bs-target="#editEmployee" className="btn btn-sm edit-employee">แก้ไข</button>
-                                <button data-bs-toggle="modal" data-bs-target="#deleteEmployee" className="btn btn-sm del-employee">ลบ</button>
-                            </Col>
-                        </Row>
-                        <ModalEmployee />
+                        {
+                            employees && employees.map((employee, index) => (
+                                <Row className="mx-3 mb-3" key={employee.employee_id}>
+                                    <Col md={1}>
+                                        {index + 1}
+                                    </Col>
+                                    <Col md={2}>
+                                        {employee.employee_name}
+                                    </Col>
+                                    <Col md={2}>
+                                        {employee.department_name}
+                                    </Col>
+                                    <Col md={2}>
+                                        {employee.role_name}
+                                    </Col>
+                                    <Col md={2}>
+                                        {employee.username}
+                                    </Col>
+                                    <Col md={2}>
+                                        <button data-bs-toggle="modal" data-bs-target="#editPasswordEmployee" className="btn btn-sm edit-employee">จัดการรหัสผ่าน</button>
+                                    </Col>
+                                    <Col md={1} className="d-flex justify-content-end gap-2">
+                                        <button onClick={() =>sendDataModal(employee.employee_id,employee.employee_name,employee.department_name,employee.role_name,employee.role_id,employee.department_id) } data-bs-toggle="modal" data-bs-target="#editEmployee" className="btn btn-sm edit-employee">แก้ไข</button>
+                                        <button onClick={() => { setEmployId(employee.employee_id); setEmployName(employee.employee_name) }} data-bs-toggle="modal" data-bs-target="#deleteEmployee" className="btn btn-sm del-employee">ลบ</button>
+                                    </Col>
+                                </Row>
+                            ))
+                        }
+                        <ModalEmployee employee_id={employee_id} employee_name={employee_name} department_name={department_name} role_name={role_name} role_id={role_id} department_id={department_id}/>
                     </Card>
                 </Col>
             </Row>

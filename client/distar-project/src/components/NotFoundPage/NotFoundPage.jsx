@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap';
 import './not-found-style.css';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 const NotFoundPage = () => {
     return (
         <Container className='page-container d-flex align-items-center justify-content-center'>
@@ -8,7 +9,8 @@ const NotFoundPage = () => {
                 <Row>
                     <Col className='title-header'>
                         <div>
-                            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXg1YTRiaGlwZjAza3Z4c2EwZW5rOHZyZ2VkMGU5czg2ZTQ5dHVtaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/H54feNXf6i4eAQubud/giphy.gif" alt="My GIF" />
+                            {/* <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXg1YTRiaGlwZjAza3Z4c2EwZW5rOHZyZ2VkMGU5czg2ZTQ5dHVtaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/H54feNXf6i4eAQubud/giphy.gif" alt="My GIF" /> */}
+                            
                         </div>
                     </Col>
                 </Row>

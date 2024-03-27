@@ -1,25 +1,51 @@
 
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { Container, Card, Row, Col, Form, Button } from 'react-bootstrap';
 import logo from '../Appbar/logo.png';
 import './login-style.css';
+import axios from 'axios';
+//import use navgate
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+    //use navigate
+    const navigate = useNavigate();
     const [validated, setValidated] = useState(false);
+    //base API endpoint
+    const API_url = import.meta.env.VITE_APP_API_KEY;
+    //set username and password
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
-    const handleSubmit = (event) => {
+ 
+
+    const handleSubmit = async (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
         }
+        event.preventDefault();
+        try {
+            const response = await axios.post(API_url+'login', { username, password });
+            const accessToken = response.data.accessToken;
+            //set token to local storage
+            localStorage.setItem('accessToken', accessToken);
+            console.log('Login successful. Access Token:', accessToken);
+            //navigate to home page
+            console.log(response.data.message);
 
-        setValidated(true);
+        } catch (error) {
+            // console.error('Login failed:', error);
+            alert('Login failed. Please try again.')
+        }
+        navigate('/');
+        // setValidated(true);
     };
     return (
-        <Container style={{padding: '100px'}} className='mt-5 d-flex justify-content-center align-content-center'>
+        <Container className='mt-5 d-flex  justify-content-center align-content-center'>
             <Row>
-                <Col>
+                <Col className='d-flex  justify-content-center align-content-center'>
                     <Card className='login-card'>
                         <Row className=' my-5'>
                             {/* Logo */}
@@ -42,6 +68,7 @@ const Login = () => {
                                             <Form.Control
                                                 type="username"
                                                 placeholder="Username"
+                                                onChange={(e) => setUsername(e.target.value)}
                                                 required
                                             />
                                             <Form.Control.Feedback type="invalid">โปรดระบุชื่อผู้ใช้งาน.</Form.Control.Feedback>
@@ -50,6 +77,7 @@ const Login = () => {
                                             <Form.Control
                                                 type="password"
                                                 placeholder="Password"
+                                                onChange={(e) => setPassword(e.target.value)}
                                                 required
                                             />
                                             <Form.Control.Feedback type="invalid">โปรดระบุรหัสผ่าน.</Form.Control.Feedback>

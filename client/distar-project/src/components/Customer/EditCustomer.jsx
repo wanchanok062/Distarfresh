@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import useUpdateData from '../hook/useUpdateData';
-//
+import useFetch from "../hook/useFetch";
 function EditCustomer(data) {
   const { customer_id } = useParams();
   const { patchData } = useUpdateData();
@@ -18,14 +18,28 @@ function EditCustomer(data) {
   const [provider, setProvider] = useState('');
   // const [customerId, setCustomerId] = useState('');
   const [validated, setValidated] = useState(false);
+  //Call customer_type form database
+  const { data: customer_type } = useFetch(`${import.meta.env.VITE_APP_API_KEY}customer_type`);
+  //Call member_type form database
+  const { data: member_type } = useFetch(`${import.meta.env.VITE_APP_API_KEY}member_type`);
+  //Call member_status form database
+  const { data: member_status } = useFetch(`${import.meta.env.VITE_APP_API_KEY}member_status`);
+  //Call payment_status form database
+  const { data: payment_status } = useFetch(`${import.meta.env.VITE_APP_API_KEY}payment_status`);
+
 
 
   const handleSubmit = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setValidated(true);
+
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+
+      return; // ไม่ต้องทำอะไรเพิ่มเติมถ้าฟอร์มไม่ถูกต้อง
     }
+
     try {
       // event.preventDefault();
       const formData = {
@@ -43,11 +57,12 @@ function EditCustomer(data) {
       };
       // await post(`${import.meta.env.VITE_APP_API_KEY}customer`, formData);
       await patchData(`${import.meta.env.VITE_APP_API_KEY}customer/${customer_id}`, formData);
+      window.location.reload();
 
     } catch (error) {
       console.log(error);
     }
-    setValidated(true);
+    // setValidated(true);
   };
   //
 
@@ -104,34 +119,50 @@ function EditCustomer(data) {
                   <Col>
                     <Form.Group className="mb-3" >
                       <Form.Label>วันที่สิ้นสุด <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.start_date.split('T')[0]}</span></Form.Label>
-                      <Form.Control type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
+                      <Form.Control type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required disabled />
                       <Form.Control.Feedback type="invalid">
                         โปรดระบุวันที่สิ้นสุด.
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
                 </Row>
+                {/* ประเภทลูกค้า */}
                 <Form.Group className="mb-3" >
                   <Form.Label>ประเภทลูกค้า<span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.customer_type_name.split('T')[0]}</span></Form.Label>
-                  <Form.Select  aria-label="Default select example" value={customerType} onChange={(e) => setCustomerType(e.target.value)} required >
-                    <option value={customer.customer_type_id}>{customer.customer_type_name}</option>
+                  <Form.Select v  aria-label="Default select example" value={customerType} onChange={(e) => setCustomerType(e.target.value)} required >
+                    {
+                      customer_type && customer_type.map((customer) => (
+                        <option value={customer.customer_type_id} key={customer.customer_type_id}>{customer.customer_type_name}</option>
+                      ))
+                    }
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">
                     โปรดเลือกประเภทลูกค้า.
                   </Form.Control.Feedback>
                 </Form.Group>
+                {/* รูปแบบสมาชิก */}
                 <Form.Group className="mb-3" >
                   <Form.Label>รูปแบบสมาชิก <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.member_type_name}</span></Form.Label>
-                  <Form.Select aria-label="Default select example" value={membership} onChange={(e) => setMembership(e.target.value)}>
-                    <option value={customer.member_type_id} >{customer.member_type_name}</option>
+                  <Form.Select aria-label="Default select example" value={membership} onChange={(e) => setMembership(e.target.value)} disabled>
+                    {
+                      member_type && member_type.map((member) => (
+                        <option value={member.member_type_id} key={member.member_type_id}>{member.member_type_name}</option>
+                      ))
+                    }
                   </Form.Select>
                 </Form.Group>
+                {/* สถานะสมาชิก */}
                 <Form.Group className="mb-3" >
                   <Form.Label>สถานะสมาชิก <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.member_status_name}</span></Form.Label>
                   <Form.Select aria-label="Default select example" value={statusMember} onChange={(e) => setStatusMember(e.target.value)}>
-                    <option value={customer.member_status_id} >{customer.member_status_name}</option>
+                    {
+                      member_status && member_status.map((member) => (
+                        <option value={member.member_status_id} key={member.member_status_id}>{member.member_status_name}</option>
+                      ))
+                    }
                   </Form.Select>
                 </Form.Group>
+                {/* ที่อยู่ */}
                 <Form.Group className="mb-3" >
                   <Form.Label>ที่อยู่</Form.Label>
                   <Form.Control as="textarea" placeholder={customer.address} value={address} onChange={(e) => setAddress(e.target.value)} required />
@@ -139,6 +170,7 @@ function EditCustomer(data) {
                     โปรดระบุที่อยู่.
                   </Form.Control.Feedback>
                 </Form.Group>
+                {/* เบอร์โทร */}
                 <Form.Group className="mb-3" >
                   <Form.Label>เบอร์โทร</Form.Label>
                   <Form.Control type="text" value={tel} placeholder={customer.tel} onChange={e => setTel(e.target.value)} required />
@@ -146,12 +178,18 @@ function EditCustomer(data) {
                     โปรดระบุเบอร์โทร.
                   </Form.Control.Feedback>
                 </Form.Group>
+                {/* สถานะการชำระเงิน */}
                 <Form.Group className="mb-3" >
                   <Form.Label>สถานะการชำระเงิน <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.paymentstatus_name}</span></Form.Label>
                   <Form.Select aria-label="Default select example" value={paymentStatus} onChange={(e) => setPaymentStatus(e.target.value)} required>
-                    <option value={customer.paymentstatus_id} >{customer.paymentstatus_name}</option>
+                    {
+                      payment_status && payment_status.map((payment) => (
+                        <option value={payment.paymentstatus_id} key={payment.paymentstatus_id}>{payment.paymentstatus_name}</option>
+                      ))
+                    }
                   </Form.Select>
                 </Form.Group>
+                {/* ผู้จัดหา */}
                 <Form.Group className="mb-3" >
                   <Form.Label>ผู้จัดหา <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}>{customer.employee_name}</span></Form.Label>
                   <Form.Select aria-label="Default select example" value={provider} onChange={(e) => setProvider(e.target.value)} required>

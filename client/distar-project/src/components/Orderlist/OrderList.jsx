@@ -2,7 +2,16 @@ import { Col, Container, Row, Card, Form, FormControl, FormSelect } from "react-
 import AddIcon from '@mui/icons-material/Add';
 import './order-list-style.css';
 import ModalOrder from "./ModalOrder";
+import useFecth from "../hook/useFetch";
+import { useState } from "react";
+
 const OrderList = () => {
+    const API_url = import.meta.env.VITE_APP_API_KEY;
+    const { data: products } = useFecth(`${API_url}products`);
+    const [product_id, setProduct_id] = useState(null)
+    const [product_name, setProduct_name] = useState(null)
+    const [product_category, setProduct_category] = useState(null)
+
 
     return (
         <Container>
@@ -24,7 +33,6 @@ const OrderList = () => {
                         </div>
                     </button>
                 </Col>
-                <ModalOrder />
             </Row>
             <Row>
                 <Col>
@@ -32,7 +40,7 @@ const OrderList = () => {
                         {/* Filter */}
                         <Row className="my-3 mx-3">
                             <Col className="d-flex justify-content-end gap-2">
-                                <Form.Select size="sm" style={{width: '200px'}}>
+                                <Form.Select size="sm" style={{ width: '200px' }}>
                                     <option>หมวดหมู่</option>
                                 </Form.Select>
                                 <Form inline>
@@ -63,27 +71,34 @@ const OrderList = () => {
                             </Col>
                         </Row>
                         <hr className="mx-4" />
-                        <Row className="text-center mb-3">
-                            <Col>
-                                <div>1</div>
-                            </Col>
-                            <Col>
-                                <div>ผักชนิดที่1</div>
-                            </Col>
-                            <Col>
-                                <div>Superfood</div>
-                            </Col>
-                            <Col>
-                                <div>100</div>
-                            </Col>
-                            <Col className="d-flex justify-content-center gap-2">
-                                <button data-bs-toggle="modal" data-bs-target="#editOrderList" className="btn btn-sm edit-order">แก้ไข</button>
-                                <button data-bs-toggle="modal" data-bs-target="#deleteOrderList" className="btn btn-sm del-order">ลบ</button>
-                            </Col>
-                        </Row>
+                        {
+                            products && products.map((item, index) => {
+                                return (
+                                    <Row key={index} className="text-center mb-3">
+                                        <Col>
+                                            <div>{index + 1}</div>
+                                        </Col>
+                                        <Col>
+                                            <div>{item.product_name}</div>
+                                        </Col>
+                                        <Col>
+                                            <div>{item.product_category}</div>
+                                        </Col>
+                                        <Col>
+                                            <div>{item.amounts}</div>
+                                        </Col>
+                                        <Col className="d-flex justify-content-center gap-2">
+                                            <button onClick={() => { setProduct_id(item.id); setProduct_name(item.product_name); setProduct_category(item.product_category) }} data-bs-toggle="modal" data-bs-target="#editOrderList" className="btn btn-sm edit-order">แก้ไข</button>
+                                            <button onClick={() => { setProduct_id(item.id); setProduct_name(item.product_name) }} data-bs-toggle="modal" data-bs-target="#deleteOrderList" className="btn btn-sm del-order">ลบ</button>
+                                        </Col>
+                                    </Row>
+                                )
+                            })
+                        }
                     </Card>
                 </Col>
             </Row>
+            <ModalOrder product_id={product_id} product_name={product_name} product_category={product_category} />
         </Container>
     )
 }

@@ -1,17 +1,19 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, Col, Container, Row, Form, FormControl, Button, ButtonGroup } from 'react-bootstrap';
 import './dashboard-style.css';
-import CustomerChart from '../Customer/CustomerChart/CustomerChart'; 
+import CustomerChart from '../Customer/CustomerChart/CustomerChart';
 import MemberChart from './MemberChart';
 import TotalSaleChart from './TotalSaleChart';
 import SaleTrendChart from './SaleTrendChart';
-import TotalSaleCard from '../Customer/CustomerCard/TotalSaleCard'; 
-import AllCustomerCard from '../Customer/CustomerCard/AllCustomerCard'; 
+import TotalSaleCard from '../Customer/CustomerCard/TotalSaleCard';
+import AllCustomerCard from '../Customer/CustomerCard/AllCustomerCard';
 import BestSalerCard from './BestSalerCard';
+import axios from 'axios';
+
+
 
 const Dashboard = () => {
-
     return (
         <Container>
             <Row className='mb-3'>

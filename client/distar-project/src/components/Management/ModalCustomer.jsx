@@ -61,7 +61,7 @@ const ModalCustomer = (customer_type) => {
                                 </Form.Group>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                                    <button type="button" onClick={handlePost}  className="btn btn-primary">ยืนยัน</button>
+                                    <button type="submit" className="btn btn-primary">ยืนยัน</button>
                                 </div>
                             </Form>
                         </div>

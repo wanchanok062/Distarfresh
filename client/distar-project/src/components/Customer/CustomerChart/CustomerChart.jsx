@@ -11,7 +11,7 @@ const CustomerChart = () => {
         datasets: [
             {
                 label: '# of Votes',
-                data: [20, 80],
+                data: [30, 70],
                 backgroundColor: [
                     '#A7BBEE',
                     '#4170E8'

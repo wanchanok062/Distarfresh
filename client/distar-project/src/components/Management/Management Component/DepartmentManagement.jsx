@@ -56,7 +56,7 @@ const DepartmentManagement = () => {
                                     <div key={index}>
                                         <Row className="mx-3 mb-3">
                                             <Col className="text-center" md={2}>
-                                                <div>{index + 1}</div>
+                                                <div>{item.department_id}</div>
                                             </Col>
                                             <Col md={2} className="text-center">
                                                 <div>{item.department_name}</div>

@@ -50,7 +50,7 @@ router.get("/customer/:id", async (req, res) => {
         LEFT JOIN member_type mt ON c.member_type_id = mt.member_type_id
         LEFT JOIN member_status ms ON c.member_status_id = ms.member_status_id
         LEFT JOIN employee e ON c.employee_id = e.employee_id
-        LEFT JOIN paymentstatus ps ON c.paymentstatus_id = ps.paymentstatus_id
+        LEFT JOIN payment_status ps ON c.paymentstatus_id = ps.paymentstatus_id
         WHERE c.customer_id = $1
       `;
     const { rows } = await pool.query(query, [req.params.id]);
@@ -107,7 +107,7 @@ router.patch("/customer/:id", async (req, res) => {
   try {
     const query = `
         UPDATE customer
-        SET full_name = $1, tel = $2, address = $3, start_date = $4, exp_date = $5, customer_type_id = $6, member_type_id = $7, member_status_id = $8, employee_id = $9,paymentStatus_id = $10
+        SET full_name = $1, tel = $2, address = $3, start_date = $4, exp_date = $5, customer_type_id = $6, member_type_id = $7, member_status_id = $8, employee_id = $9,paymentstatus_id = $10
         WHERE customer_id = $11
         RETURNING *
       `;

@@ -3,6 +3,7 @@ require("dotenv").config();
 const app = require("./router/app");
 const pool = require("./db/db");
 
+
 // Use dotenv port
 const port = process.env.PORT;
 // Log messages indicating successful connection

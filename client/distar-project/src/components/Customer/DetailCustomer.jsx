@@ -18,6 +18,25 @@ function DetailCustomer() {
     const { customer_id } = useParams();
     const [data, setData] = useState(null);
 
+    //function convert date to thai date format (DD/MM/YYYY)
+    function convertThaiDate(dateString) {
+        const [day, month, year] = dateString.split('/');
+        const thaiMonths = [
+            'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+            'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+        ];
+        const thaiMonth = thaiMonths[parseInt(month, 10) - 1];
+        return `${day} ${thaiMonth} ${year}`;
+    }
+
+    function convertToThaiDate(isoDate) {
+        const dateOnly = isoDate.split('T')[0];
+        const [year, month, day] = dateOnly.split('-');
+        //create date in format (DD/MM/YYYY)
+        const thaiDate = `${day}/${month}/${year}`;
+        return convertThaiDate(thaiDate);
+    }
+
     useEffect(() => {
         //useFetch data
         const fetchData = async () => {
@@ -80,10 +99,23 @@ function DetailCustomer() {
                                     <Col md={4} className='text-right'>
                                         รหัสลูกค้า
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={9}>
                                         <span className="bg-warning" style={{ padding: "0.1px 10px", borderRadius: "20px" }}> {customer.customer_id}</span>
                                     </Col>
-                                    <Col md={4} className='text-right'>
+                                    <Col md={3} className='text-right'>
+                                        วันที่สมัคร
+                                    </Col>
+                                    <Col md={9}>
+                                        {convertToThaiDate(customer.start_date)}
+                                    </Col>
+                                    <Col md={3} className='text-right'>
+                                        วันที่สิ้นสุด
+                                    </Col>
+                                    <Col md={9}>
+                                        {convertToThaiDate(customer.exp_date)}
+                                    </Col>
+
+                                    <Col md={3} className='text-right'>
                                         ชื่อ-สกุล
                                     </Col>
                                     <Col md={8}>
@@ -110,7 +142,7 @@ function DetailCustomer() {
                                     <Col md={4} className='text-right'>
                                         รูปแบบ
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={9}>
                                         {customer.member_type_name}
                                     </Col>
                                     <Col md={4} className='text-right'>

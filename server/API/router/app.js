@@ -10,6 +10,10 @@ const employeeRoleRouter = require('./employee_role');
 const productCategoryRouter = require('./product_category');
 const operationRouter = require('./operation');
 const departmentRouter =require('./department');
+const productsRouter = require('./products');
+const employeeRouter = require('./employee');
+const cookieParser = require('cookie-parser');
+const authen = require('./authen'); 
 
 // Create an Express application
 const app = express();
@@ -18,6 +22,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Custom middleware
 app.use((req, res, next) => {
@@ -35,6 +40,10 @@ app.use('/api/v1.0', employeeRoleRouter);
 app.use('/api/v1.0', productCategoryRouter);
 app.use('/api/v1.0', operationRouter);
 app.use('/api/v1.0', departmentRouter);
+app.use('/api/v1.0', productsRouter);
+app.use('/api/v1.0', employeeRouter);
+app.use('/api/v1.0', authen);
+
 
 // Export the Express application
 module.exports = app;

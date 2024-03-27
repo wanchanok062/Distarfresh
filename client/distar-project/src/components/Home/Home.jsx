@@ -9,14 +9,13 @@ import OrderList from "../Orderlist/OrderList";
 import Employee from "../Employee/Employee";
 import Schedule from "../Schedule/Schedule";
 import Dashboard from "../Dashboard/Dashboard";
-import Login from "../Login/Login";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
 export const CustomersContext = createContext();
+
 
 const Home = () => {
     // Assuming customer data is fetched using useFetch hook
     const [customers, setCustomers] = useState([]);
-    
     // Fetch customers data here using useFetch hook and set it using setCustomers
 
     return (
@@ -32,7 +31,6 @@ const Home = () => {
                     <Route path="/orderlist" element={<OrderList />} />
                     <Route path="/employee" element={<Employee />} />
                     <Route path="/management/:component" element={<Management />} />
-                    <Route path="/login" element={<Login />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </CustomersContext.Provider>

@@ -17,6 +17,10 @@ const Appbar = () => {
     const [toggled, setToggled] = useState(false);
     const [broken, setBroken] = useState(false);
 
+    function handleLogout() {
+        localStorage.removeItem('accessToken');
+    }
+    
     return (
         <div>
             <Sidebar
@@ -92,8 +96,8 @@ const Appbar = () => {
                                     จัดการข้อมูล
                                 </MenuItem>
                             </Link>
-                            <Link to="/login" className="link">
-                                <MenuItem className="menu-item" icon={<LogoutOutlinedIcon  />}>
+                            <Link className="link">
+                                <MenuItem onClick={() => handleLogout()}  className="menu-item" icon={<LogoutOutlinedIcon />}>
                                     ออกจากระบบ
                                 </MenuItem>
                             </Link>
