@@ -29,13 +29,16 @@ router.post("/login", (req, res) => {
   const query = {
     text: `
         SELECT 
-            employee_id, 
-            username, 
-            password 
+            e.employee_id,
+            e.employee_name,
+            e.username, 
+            e.password, 
+            r.role_name
         FROM 
-            employee 
+            employee e
+        JOIN  employee_role r ON e.role_id = r.role_id
         WHERE 
-            username = $1
+            e.username = $1
         `,
     values: [username],
   };
@@ -57,11 +60,18 @@ router.post("/login", (req, res) => {
         }
 
         if (!isMatch) {
-          return res.status(400).json({ message: "รหัสผ่านหรือชื่อผู้ใช้ไม่ถูกต้อง" });
+          return res
+            .status(400)
+            .json({ message: "รหัสผ่านหรือชื่อผู้ใช้ไม่ถูกต้อง" });
         }
 
         const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-        res.json({ accessToken: accessToken });
+        res.json({
+          accessToken: accessToken,
+          employee_id: user.employee_id,
+          role_name: user.role_name,
+          employee_name : user.employee_name
+        });
       });
     })
     .catch((error) => {

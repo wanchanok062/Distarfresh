@@ -19,8 +19,11 @@ const Appbar = () => {
 
     function handleLogout() {
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('user_role');
+        localStorage.removeItem('employee_id');
+        localStorage.removeItem('employee_name');
     }
-    
+
     return (
         <div>
             <Sidebar
@@ -97,7 +100,7 @@ const Appbar = () => {
                                 </MenuItem>
                             </Link>
                             <Link className="link">
-                                <MenuItem onClick={() => handleLogout()}  className="menu-item" icon={<LogoutOutlinedIcon />}>
+                                <MenuItem onClick={() => handleLogout()} className="menu-item" icon={<LogoutOutlinedIcon />}>
                                     ออกจากระบบ
                                 </MenuItem>
                             </Link>

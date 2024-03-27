@@ -4,7 +4,7 @@ import DetailCustomer from "../Customer/DetailCustomer";
 import AllCustomer from "../Customer/AllCustomer";
 import Management from "../Management/Management";
 import useFetch from "../hook/useFetch";
-import { createContext, useState } from "react";
+import { createContext, useState} from "react";
 import OrderList from "../Orderlist/OrderList";
 import Employee from "../Employee/Employee";
 import Schedule from "../Schedule/Schedule";
@@ -13,11 +13,11 @@ import NotFoundPage from "../NotFoundPage/NotFoundPage";
 export const CustomersContext = createContext();
 
 
+
 const Home = () => {
     // Assuming customer data is fetched using useFetch hook
     const [customers, setCustomers] = useState([]);
     // Fetch customers data here using useFetch hook and set it using setCustomers
-
     return (
         <div>
             {/* Routes from router */}

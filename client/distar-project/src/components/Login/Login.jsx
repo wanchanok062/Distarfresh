@@ -29,11 +29,14 @@ const Login = () => {
         try {
             const response = await axios.post(API_url+'login', { username, password });
             const accessToken = response.data.accessToken;
+            const user_role = response.data.role_name;
+            const employee_id  = response.data.employee_id;
+            const employee_name  = response.data.employee_name;
             //set token to local storage
             localStorage.setItem('accessToken', accessToken);
-            console.log('Login successful. Access Token:', accessToken);
-            //navigate to home page
-            console.log(response.data.message);
+            localStorage.setItem('user_role', user_role);
+            localStorage.setItem('employee_id', employee_id);
+            localStorage.setItem('employee_name', employee_name);
 
         } catch (error) {
             // console.error('Login failed:', error);

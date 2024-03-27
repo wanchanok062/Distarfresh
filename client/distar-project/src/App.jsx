@@ -2,43 +2,19 @@
 import Appbar from "./components/Appbar/Appbar";
 import Header from "./components/Header/Header";
 import { Box, CssBaseline } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import Home from "./components/Home/Home"
 import Login from "./components/Login/Login";
-import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import useProtectedRoute from "./components/hook/useProtectedRoute";
 
 
 function App() {
   const [isSidebar, setIsSidebar] = useState(true);
-  //use navigate
-  const navigate = useNavigate();
-  //base API endpoint
-  const API_url = import.meta.env.VITE_APP_API_KEY;
+  //check if user is authenticated
+  const  authCheck = useProtectedRoute();
+  
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (!accessToken) {
-      navigate('/login');
-      return
-    }
-    const headers = {
-      Authorization: `Bearer ${accessToken}`
-    };
-
-    axios.get(API_url + '/protected', { headers })
-      .then(response => {
-        if (response.data.message === 'ok') {
-
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-
-  }, [])
-
-  if (!localStorage.getItem('accessToken')) {
+  if (!localStorage.getItem('accessToken') && !authCheck ) {
     return (
       <div className="d-flex justify-content-center align-items-center " style={{width:"100%", height:"100vh"}}>
         <Login />;
@@ -46,12 +22,10 @@ function App() {
     )
 
   }
-
   return (
     <>
       <CssBaseline />
       <div className="app">
-
         <Appbar isSidebar={isSidebar} />
         <main className="content">
           <Header setIsSidebar={setIsSidebar} />
