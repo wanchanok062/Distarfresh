@@ -9,6 +9,7 @@ import OrderList from "../Orderlist/OrderList";
 import Employee from "../Employee/Employee";
 import Schedule from "../Schedule/Schedule";
 import Dashboard from "../Dashboard/Dashboard";
+import NotFoundPage from "../NotFoundPage/NotFoundPage";
 export const CustomersContext = createContext();
 
 
@@ -34,6 +35,7 @@ const Home = () => {
                         </>
                     )}
                     <Route path="/orderlist" element={<OrderList />} />
+                    <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </CustomersContext.Provider>
         </div>

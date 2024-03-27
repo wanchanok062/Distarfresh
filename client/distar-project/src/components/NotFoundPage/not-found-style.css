@@ -1,0 +1,29 @@
+.page-container {
+    text-align: center;
+    padding: 50px;
+}
+.notfound-card {
+    border-radius: 20px;
+    width: 50%;
+}
+.content-card {
+    color: #464646;
+}
+.btn-home {
+    border-radius: 5px;
+    background-color: #DEE3F0;
+    color: #4D639B;
+}
+.btn-home:hover {
+    color: #4D639B;
+}
+.title-header {
+    font-size: 100px;
+}
+.topic {
+    font-size: 48px;
+}
+.caption {
+    font-size: 18px;
+    font-weight:300;
+}
