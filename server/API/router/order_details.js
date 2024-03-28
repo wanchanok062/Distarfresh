@@ -49,15 +49,15 @@ router.post("/order_detail", async (req, res) => {
     );
 
     // Extract data from the request body
-    const { product_id, order_id, quantity } = req.body;
+    const { product_id, order_id, quantity,customer_id } = req.body;
 
     // Insert the new order_detail into the database
     const query = `
-        INSERT INTO order_detail (order_detail_id, product_id, order_id, quantity)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO order_detail (order_detail_id, product_id, order_id, quantity,customer_id)
+        VALUES ($1, $2, $3, $4 , $5)
         RETURNING *
       `;
-    const values = [orderDetailId, product_id, order_id, quantity];
+    const values = [orderDetailId, product_id, order_id, quantity , customer_id];
     const { rows } = await pool.query(query, values);
 
     // Send the newly created order_detail as a response
@@ -67,6 +67,27 @@ router.post("/order_detail", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+// GET endpoint for retrieving all order_details by customer_id
+router.get("/order_details/:customer_id", async (req, res) => {
+    try {
+      const { customer_id } = req.params;
+  
+      const query = `
+        SELECT od.*, p.product_name
+        FROM order_detail od
+        INNER JOIN products p ON od.product_id = p.id
+        WHERE od.customer_id = $1
+      `;
+  
+      const { rows } = await pool.query(query, [customer_id]);
+      res.json(rows);
+    } catch (error) {
+      console.error("Error executing query", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+  
 
 
 // DELETE endpoint for deleting an existing order_detail

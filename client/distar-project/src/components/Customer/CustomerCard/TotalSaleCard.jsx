@@ -12,7 +12,7 @@ const TotalSaleCard = () => {
                 <Row className='m-3'>
                     <Col className='m' md={8} xs={8}>
                         <div>ยอดขายทั้งหมด</div> {/* Title */}
-                        <div className='text-data'>1000000</div> {/* Data */}
+                        <div className='text-data'>-</div> {/* Data */}
                     </Col>
                     <Col md={4} xs={4}>
                         <div className='icon d-flex justify-content-end'>

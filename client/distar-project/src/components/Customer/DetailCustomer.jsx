@@ -31,7 +31,7 @@ function DetailCustomer() {
             'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
         ];
         const thaiMonth = thaiMonths[parseInt(month, 10) - 1];
-        return `${parseInt(day,10)+1} ${thaiMonth} ${year}`;
+        return `${parseInt(day, 10) + 1} ${thaiMonth} ${year}`;
     }
 
     function convertToThaiDate(isoDate) {
@@ -58,8 +58,17 @@ function DetailCustomer() {
             }
         };
 
+        const isFirstLogin = localStorage.getItem('isCreateCustomer');
+        if (isFirstLogin === null || isFirstLogin === 'true') {
+            notify().then(() => {
+                localStorage.setItem('isCreateCustomer', 'false');
+            }).catch(error => {
+                console.error('Error displaying notification:', error);
+            });
+        }
+
         fetchData(); // Call fetchData function when component mounts
-    }, []); // Run useEffect when customer_id changes
+    }, [customer_id]); // Run useEffect when customer_id changes
 
 
 
@@ -80,16 +89,6 @@ function DetailCustomer() {
     };
 
 
-    useEffect(() => {
-        const isFirstLogin = localStorage.getItem('isCreateCustomer');
-        if (isFirstLogin === null || isFirstLogin === 'true') {
-            notify().then(() => {
-                localStorage.setItem('isCreateCustomer', 'false');
-            }).catch(error => {
-                console.error('Error displaying notification:', error);
-            });
-        }
-    }, []);
 
 
     //state for store data order
@@ -109,7 +108,7 @@ function DetailCustomer() {
                 {/* 3 Card */}
                 <Col>
                     {/* from folder CustomerCard */}
-                    <DetailCustomerCard />
+                    <DetailCustomerCard/>
                 </Col>
             </Row>
             <Row>
@@ -221,7 +220,7 @@ function DetailCustomer() {
                             {/* Order Trend Chart */}
                             <Col md={12} className='d-flex justify-content-center'>
                                 {/* Pie Chart from folder CustomerChart */}
-                                <OrderTrendChart />
+                                <OrderTrendChart customer_id={customer_id} />
                             </Col>
                         </Row>
                     </Card>
@@ -271,7 +270,7 @@ function DetailCustomer() {
                                     </Col>
                                     <Col md={2}>
                                         <div className='text-center'>
-                                            <button onClick={() => setOrder_id(order.order_id)}  id='detail-order' className='btn mx-2 btn-sm '
+                                            <button onClick={() => setOrder_id(order.order_id)} id='detail-order' className='btn mx-2 btn-sm '
                                                 data-bs-toggle="modal" data-bs-target="#ModalDetailProducts" >
                                                 ดูรายละเอียด
                                             </button>
@@ -315,7 +314,7 @@ function DetailCustomer() {
                         <AddOrder customer_id={customer_id} />
                         <EditOrder order_id={order_id} cycle_order={cycle_order} />
                         <DeleteOrder delete_id={order_id} />
-                        <ModalDetailProducts order_id={order_id} />
+                        <ModalDetailProducts order_id={order_id} customer_id={customer_id} />
                     </Row>
                 </Card.Body>
             </Card>

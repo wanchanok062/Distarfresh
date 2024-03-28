@@ -94,8 +94,8 @@ const EditOrder = (order_id) => {
                                 <Form.Select onChange={(e) => setOperation_name(e.target.value)} value={operation_name} aria-label="Default select example" required >
                                     <option value=""></option>
                                     {
-                                        operation_data.map((item) => (
-                                            <option value={item.operation_name}>{item.operation_name}</option>
+                                        operation_data.map((item,index) => (
+                                            <option key={index} value={item.operation_name}>{item.operation_name}</option>
                                         ))
                                     }
                                 </Form.Select>

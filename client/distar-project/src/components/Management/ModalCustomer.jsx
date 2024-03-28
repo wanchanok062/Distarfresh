@@ -77,7 +77,7 @@ const ModalCustomer = (customer_type) => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <Form noValidate validated={validated}>
+                            <Form noValidate validated={validated} onSubmit={handleSubmit}>
                                 <Form.Group>
                                     <Form.Label>ประเภทลูกค้า</Form.Label>
                                     <Form.Control onChange={(e)=>setCustomer_name_data(e.target.value)} required type="text" defaultValue={customer_name_data} placeholder="" />
@@ -85,7 +85,7 @@ const ModalCustomer = (customer_type) => {
                                 </Form.Group>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-none" data-bs-dismiss="modal">ยกเลิก</button>
-                                    <button type="button" onClick={handleSubmit} data-bs-dismiss="modal" className="btn btn-primary">ยืนยัน</button>
+                                    <button type="button" data-bs-dismiss="modal" className="btn btn-primary">ยืนยัน</button>
                                 </div>
                             </Form>
                         </div>

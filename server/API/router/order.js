@@ -19,7 +19,7 @@ router.get("/orders", async (req, res) => {
   }
 });
 
-//flind one order by id
+//flind one order by customer_name
 router.get("/order/:customer_name", async (req, res) => {
   try {
     // ค้นหา customer_id จากตาราง customers โดยใช้ customer_name
@@ -40,6 +40,7 @@ router.get("/order/:customer_name", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 // fine all orders by customer_id
 router.get("/orders/:id", async (req, res) => {

@@ -24,7 +24,8 @@ const ModalDetailProducts = (order_id) => {
     const data = {
         product_id: product_id,
         quantity: quantity,
-        order_id: order_id.order_id
+        order_id: order_id.order_id,
+        customer_id: order_id.customer_id
     }
     //alert
     const notify = (message) => {
@@ -74,7 +75,7 @@ const ModalDetailProducts = (order_id) => {
             return
         }
 
-        if (totalQuantity >= 10 || totalQuantity + parseInt(quantity) > 10){
+        if (totalQuantity >= 10 || totalQuantity + parseInt(quantity) > 10) {
             return new Promise((resolve, reject) => {
                 notify(`จำนวนสินค้าต้องไม่เกิน 10 หน่วย`);
                 resolve(); // ต้องเรียก resolve() เพื่อให้ Promise ทำงานเสร็จสิ้น
@@ -183,9 +184,9 @@ const ModalDetailProducts = (order_id) => {
                                     <div className="col-md-2">
                                         <Button className='mt-3' id='add-order' onClick={handleSubmit}>เพิ่ม</Button>
                                     </div>
-                                    {/* <div className="col p-2">
-                                        <Button type='button' className='mt-3' style={{ width: '100%' }} id='add-order' onClick={handleSubmit}>บันทึก</Button>
-                                    </div> */}
+                                    <div className="col p-2">
+                                        <Button type='button' className='mt-3' style={{ width: '100%' }} id='add-order' onClick={()=>window.location.reload()}>บันทึก</Button>
+                                    </div>
                                 </div>
                             </div>
                         </Form>
