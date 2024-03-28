@@ -81,3 +81,16 @@
 .card-style{
     height: 100%;
 }
+.order_detail{
+    /* background-color: #AF2F2F; */
+    margin: 10px;
+    border-bottom:  1.5px solid #dedede;
+}
+.order_detail_index{
+    /* background-color: #4D639B; */
+    color: #4D639B;
+    font-weight: bold;
+    padding: 2px;
+
+    /* margin-right: 10px; */
+}

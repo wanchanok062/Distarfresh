@@ -68,24 +68,16 @@ router.post("/order_detail", async (req, res) => {
   }
 });
 
-// PATCH endpoint for updating an existing order_detail
-router.patch("/order_detail/:id", async (req, res) => {
+
+// DELETE endpoint for deleting an existing order_detail
+router.delete("/order_detail/:id", async (req, res) => {
   try {
-    // Extract data from the request body
-    const { product_id, order_id, quantity } = req.body;
+    // Delete the order_detail from the database
+    const query = `DELETE FROM order_detail WHERE order_detail_id = $1`;
+    await pool.query(query, [req.params.id]);
 
-    // Update the order_detail in the database
-    const query = `
-        UPDATE order_detail
-        SET product_id = $1, order_id = $2, quantity = $3
-        WHERE order_detail_id = $4
-        RETURNING *
-      `;
-    const values = [product_id, order_id, quantity, req.params.id];
-    const { rows } = await pool.query(query, values);
-
-    // Send the updated order_detail as a response
-    res.json(rows[0]);
+    // Send a success response
+    res.json({ message: "Order detail deleted successfully" });
   } catch (error) {
     console.error("Error executing query", error);
     res.status(500).json({ error: "Internal Server Error" });

@@ -13,7 +13,7 @@ const usePost = () => {
             setData(response.data);
             setLoading(false);
         } catch (error) {
-            setError(error);
+            setError(true);
             setLoading(false);
         }
     };

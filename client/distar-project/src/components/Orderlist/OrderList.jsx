@@ -71,7 +71,7 @@ const OrderList = () => {
                                 <div>หมวดหมู่</div>
                             </Col>
                             <Col>
-                                <div>จำนวนที่ขายทั้งหมด</div>
+                                <div></div>
                             </Col>
                             <Col>
                                 <div></div>
@@ -92,7 +92,7 @@ const OrderList = () => {
                                             <div>{item.product_category}</div>
                                         </Col>
                                         <Col>
-                                            <div>{item.amounts}</div>
+                                            
                                         </Col>
                                         <Col className="d-flex justify-content-center gap-2">
                                             <button onClick={() => { setProduct_id(item.id); setProduct_name(item.product_name); setProduct_category(item.product_category) }} data-bs-toggle="modal" data-bs-target="#editOrderList" className="btn btn-sm edit-order">แก้ไข</button>
