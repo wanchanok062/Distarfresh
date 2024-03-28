@@ -74,7 +74,7 @@ const ModalDetailProducts = (order_id) => {
             return
         }
 
-        if (totalQuantity >= 10) {
+        if (totalQuantity >= 10 || totalQuantity + parseInt(quantity) > 10){
             return new Promise((resolve, reject) => {
                 notify(`จำนวนสินค้าต้องไม่เกิน 10 หน่วย`);
                 resolve(); // ต้องเรียก resolve() เพื่อให้ Promise ทำงานเสร็จสิ้น
@@ -111,7 +111,6 @@ const ModalDetailProducts = (order_id) => {
     };
 
     const totalQuantity = order_detail_data.reduce((accumulator, currentValue) => accumulator + currentValue.quantity, 0);
-    // console.log(totalQuantity);
 
 
     return (

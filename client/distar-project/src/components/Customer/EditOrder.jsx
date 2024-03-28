@@ -50,19 +50,8 @@ const EditOrder = (order_id) => {
             setValidated(true);
             return
         }
-
         //patch data to API
-        patchData(`${API_url}order/${order_id.order_id}`, data);
-        // console.log(data);
-        // event.preventDefault();
-
-        // console.log(order_id.order_id);
-        // console.log(operation_name);
-        // console.log(cycle_date);
-        // console.log(order_id.cycle_order);
-        // console.log(delivery_day);
-       
-       
+        patchData(`${API_url}order/${order_id.order_id}`, data);   
     }
 
     return (
