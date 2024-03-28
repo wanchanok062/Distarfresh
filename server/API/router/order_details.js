@@ -23,7 +23,7 @@ router.get("/order_details", async (req, res) => {
   }
 });
 
-//flind one order_detail by id
+//flind one order_detail by order ID
 router.get("/order_detail/:id", async (req, res) => {
   try {
     const query = ` SELECT od.*, p.product_name

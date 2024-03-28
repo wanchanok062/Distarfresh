@@ -47,6 +47,7 @@ const Login = () => {
             localStorage.setItem('user_role', user_role);
             localStorage.setItem('employee_name', employee_name);
             localStorage.setItem('isFirstLogin', 'true');
+            localStorage.setItem('isCreateCustomer', 'false');
 
         } catch (error) {
             // console.error('Login failed:', error);

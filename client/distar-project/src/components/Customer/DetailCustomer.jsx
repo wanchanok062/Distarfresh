@@ -14,6 +14,7 @@ import axios from 'axios';
 import OrderTrendChart from './CustomerChart/OrderTrendChart'; // from folder CustomerChart.
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ModalDetailProducts from './ModalDetailProducts';
 
 
 function DetailCustomer() {
@@ -30,7 +31,7 @@ function DetailCustomer() {
             'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
         ];
         const thaiMonth = thaiMonths[parseInt(month, 10) - 1];
-        return `${day} ${thaiMonth} ${year}`;
+        return `${parseInt(day,10)+1} ${thaiMonth} ${year}`;
     }
 
     function convertToThaiDate(isoDate) {
@@ -51,7 +52,6 @@ function DetailCustomer() {
                 // Fetch order data
                 const orderResponse = await axios.get(`${import.meta.env.VITE_APP_API_KEY}orders_customer/${customer_id}`);
                 setOrderData(orderResponse.data);
-                console.log(orderResponse.data);
 
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -94,6 +94,7 @@ function DetailCustomer() {
 
     //state for store data order
     const [order_id, setOrder_id] = useState('')
+    const [cycle_order, setCycle_order] = useState('')
 
 
 
@@ -270,8 +271,8 @@ function DetailCustomer() {
                                     </Col>
                                     <Col md={2}>
                                         <div className='text-center'>
-                                            <button id='detail-order' className='btn mx-2 btn-sm '
-                                                data-bs-toggle="modal" data-bs-target="#editOrder">
+                                            <button onClick={() => setOrder_id(order.order_id)}  id='detail-order' className='btn mx-2 btn-sm '
+                                                data-bs-toggle="modal" data-bs-target="#ModalDetailProducts" >
                                                 ดูรายละเอียด
                                             </button>
                                         </div>
@@ -294,7 +295,7 @@ function DetailCustomer() {
                                     <Col md={2} className='d-flex justify-content-end'>
                                         {/* <Col md={1}> */}
                                         <button id='edit-order' className='btn mx-2 btn-sm '
-                                            data-bs-toggle="modal" data-bs-target="#editOrder" onClick={() => setOrder_id(order.order_id)}>
+                                            data-bs-toggle="modal" data-bs-target="#editOrder" onClick={() => { setOrder_id(order.order_id); setCycle_order(order.cycle_order) }}>
                                             แก้ไข
                                         </button>
                                         {/* </Col> */}
@@ -312,8 +313,9 @@ function DetailCustomer() {
                         }
                         {/* Modal Order */}
                         <AddOrder customer_id={customer_id} />
-                        <EditOrder order_id={order_id} />
+                        <EditOrder order_id={order_id} cycle_order={cycle_order} />
                         <DeleteOrder delete_id={order_id} />
+                        <ModalDetailProducts order_id={order_id} />
                     </Row>
                 </Card.Body>
             </Card>
