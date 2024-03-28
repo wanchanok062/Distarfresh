@@ -52,14 +52,14 @@ router.get("/product/:id", async (req, res) => {
 router.post("/product", async (req, res) => {
   try {
     // Extract the data from the request body
-    const { product_name, amounts, product_category } = req.body;
+    const { product_name, product_category } = req.body;
 
     // Query to add new product
     const query = `
       INSERT INTO 
-        products (product_name, amounts, product_category) 
+        products (product_name, product_category) 
       VALUES 
-        ($1, $2, $3) 
+        ($1, $2) 
       RETURNING 
         *;
     `;
@@ -67,7 +67,6 @@ router.post("/product", async (req, res) => {
     // Execute the query
     const { rows } = await pool.query(query, [
       product_name,
-      amounts,
       product_category,
     ]);
 
@@ -82,7 +81,7 @@ router.post("/product", async (req, res) => {
 router.patch("/product/:id", async (req, res) => {
   try {
     // Extract the data from the request body
-    const { product_name, amounts, product_category } = req.body;
+    const { product_name,  product_category } = req.body;
 
     // Query to update product by ID
     const query = `
@@ -90,10 +89,9 @@ router.patch("/product/:id", async (req, res) => {
         products 
       SET 
         product_name = $1, 
-        amounts = $2, 
-        product_category = $3 
+        product_category = $2 
       WHERE 
-        id = $4 
+        id = $3
       RETURNING 
         *;
     `;
@@ -101,7 +99,6 @@ router.patch("/product/:id", async (req, res) => {
     // Execute the query
     const { rows } = await pool.query(query, [
       product_name,
-      amounts,
       product_category,
       req.params.id,
     ]);

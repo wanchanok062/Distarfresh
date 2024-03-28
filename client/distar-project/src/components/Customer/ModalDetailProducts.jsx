@@ -31,7 +31,7 @@ const ModalDetailProducts = (order_id) => {
         return new Promise((resolve, reject) => {
             toast.error(`${message}`, {
                 position: "top-right",
-                autoClose: 1000,
+                autoClose: 1500,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,

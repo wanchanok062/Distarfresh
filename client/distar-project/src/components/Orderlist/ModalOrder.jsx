@@ -40,7 +40,6 @@ const ModalOrder = (products) => {
         try {
             const formData = {
                 product_name: product_name,
-                amounts: 0,
                 product_category: product_category
             };
             // ตรวจสอบเงื่อนไขว่า formData ไม่เป็นค่าว่าง
