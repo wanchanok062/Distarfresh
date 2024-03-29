@@ -16,6 +16,7 @@ const cookieParser = require('cookie-parser');
 const authen = require('./authen'); 
 const orderRouter = require('./order');
 const orderDetailsRouter = require('./order_details');
+const scheduleRouer = require('./Schedule');
 
 // Create an Express application
 const app = express();
@@ -47,6 +48,8 @@ app.use('/api/v1.0', employeeRouter);
 app.use('/api/v1.0', authen);
 app.use('/api/v1.0', orderRouter);
 app.use('/api/v1.0', orderDetailsRouter);
+app.use('/api/v1.0', scheduleRouer);
+
 
 
 // Export the Express application

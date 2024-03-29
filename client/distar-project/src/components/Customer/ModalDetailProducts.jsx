@@ -75,9 +75,9 @@ const ModalDetailProducts = (order_id) => {
             return
         }
 
-        if (totalQuantity >= 10 || totalQuantity + parseInt(quantity) > 10) {
+        if (totalQuantity >= 20 || totalQuantity + parseInt(quantity) > 20) {
             return new Promise((resolve, reject) => {
-                notify(`จำนวนสินค้าต้องไม่เกิน 10 หน่วย`);
+                notify(`จำนวนสินค้าต้องไม่เกิน 20 หน่วย`);
                 resolve(); // ต้องเรียก resolve() เพื่อให้ Promise ทำงานเสร็จสิ้น
             });
         }
@@ -171,7 +171,7 @@ const ModalDetailProducts = (order_id) => {
                                                 type="number"
                                                 min={0}
                                                 max={10}
-                                                onChange={(e) => { e.target.value > 10 ? setQuantity(10) : setQuantity(e.target.value) }}
+                                                onChange={(e) => { e.target.value > 20 ? setQuantity(20) : setQuantity(e.target.value) }}
                                                 aria-describedby="quantity"
                                                 placeholder='จำนวน'
                                                 required
