@@ -54,7 +54,7 @@ const MemberChart = () => {
                     '#A7BBEE',
                     '#4170E8',
                     '#FFC0CB',
-                    // Add more colors as needed
+                      // Add more colors as needed
                 ],
                 borderColor: [
                     '#A7BBEE',

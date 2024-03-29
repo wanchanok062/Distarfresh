@@ -14,15 +14,6 @@ const Schedule = () => {
                     <Card className="card-schedule">
                         <Row className="my-3 mx-3">
                             <Col className="d-flex justify-content-end gap-2">
-                                <Form.Select size="sm" style={{ width: '200px' }}>
-                                    <option>รอบวันที่จัดส่ง</option>
-                                </Form.Select>
-                                <Form.Select size="sm" style={{ width: '200px' }}>
-                                    <option>ประเภทสมาชิก</option>
-                                </Form.Select>
-                                <Form.Select size="sm" style={{ width: '200px' }}>
-                                    <option>สถานะการจัดส่ง</option>
-                                </Form.Select>
                                 <Form inline>
                                     <FormControl
                                         type="text"
