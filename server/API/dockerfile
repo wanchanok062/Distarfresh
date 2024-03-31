@@ -1,0 +1,24 @@
+# เลือก base image ที่มี Node.js เวอร์ชันที่คุณต้องการ
+FROM node:18
+
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+# ระบุโฟลเดอร์ที่จะใช้เป็น working directory ใน container
+WORKDIR /app/API
+
+# คัดลอกไฟล์ package.json และ package-lock.json ไปยังโฟลเดอร์ /app
+COPY package*.json ./
+
+# ติดตั้ง dependencies โดยใช้ npm
+RUN npm install
+
+# คัดลอกโค้ดทั้งหมดไปยังโฟลเดอร์ /app
+COPY . .
+
+# กำหนด port ที่ Node.js application ของคุณจะรอการเชื่อมต่อ
+EXPOSE 5055
+
+# สั่งให้ container เริ่มต้นการทำงานด้วยคำสั่ง "node server.js" (เปลี่ยนเป็นชื่อไฟล์ของเซิร์ฟเวอร์ของคุณตามต้องการ)
+CMD ["node", "server.js"]

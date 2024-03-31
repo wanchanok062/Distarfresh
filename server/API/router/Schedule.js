@@ -12,7 +12,7 @@ router.get('/schedules', async (req, res) => {
       // Query to join order and customer tables
       const query = `
         SELECT o.order_id, o.operation_name, o.cycle_date, o.cycle_order, o.delivery_date,
-               c.full_name
+               c.full_name,c.customer_id
         FROM "orders" o
         JOIN customer c ON o.customer_id = c.customer_id
       `;

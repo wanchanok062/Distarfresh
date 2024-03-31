@@ -101,6 +101,7 @@ const Schedule = () => {
                                 </Col>
                                 <Col md={2}>
                                     <div>{order.cycle_date}</div>
+
                                 </Col>
                                 <Col md={2}>
                                     <div>{convertToThaiDate(order.delivery_date)}</div>
@@ -110,7 +111,7 @@ const Schedule = () => {
                                 </Col>
                                 <Col md={2}>
                                     {/* to DetailCustomer.jsx id */}
-                                    <Link to="./customer/detailcustomer/">
+                                    <Link to={`/customer/detailcustomer/${order.customer_id}`}>
                                         <button className="btn btn-sm detail">รายละเอียด</button>
                                     </Link>
                                 </Col>
